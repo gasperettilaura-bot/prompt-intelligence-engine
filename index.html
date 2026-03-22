@@ -56,6 +56,8 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .tab{padding:5px 12px;border-radius:8px;font-size:11px;font-weight:500;cursor:pointer;transition:var(--t);white-space:nowrap;border:1px solid transparent;background:transparent;color:var(--text2);font-family:inherit}
 .tab:hover{background:var(--glass);color:var(--text)}
 .tab.on{border-color:var(--accent);background:var(--accentG);color:var(--accent2)}
+.tab-wf,.tab-home{border-color:var(--border);color:var(--text3)}
+.tab-wf:hover,.tab-home:hover{border-color:var(--green);color:var(--green);background:rgba(110,231,160,0.06)}
 .tab[data-c="A"].on{border-color:var(--cA);color:var(--cA);background:rgba(168,130,255,0.08)}
 .tab[data-c="B"].on{border-color:var(--cB);color:var(--cB);background:rgba(96,165,250,0.08)}
 .tab[data-c="C"].on{border-color:var(--cC);color:var(--cC);background:rgba(110,231,160,0.08)}
@@ -322,6 +324,8 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
   <button class="tab" data-c="D" role="tab">D: Domain-Anwendungen</button>
   <button class="tab" data-c="fav" role="tab">★ Favoriten</button>
   <button class="tab" data-c="used" role="tab">✓ Genutzt</button>
+  <button class="tab tab-wf" onclick="showHome();setTimeout(()=>document.getElementById('wf-grid').scrollIntoView({behavior:'smooth',block:'start'}),100)" role="tab">🔗 Workflows</button>
+  <button class="tab tab-home" onclick="showHome()" role="tab">🏠 Dashboard</button>
 </div>
 
 <!-- LAYOUT -->
@@ -974,7 +978,7 @@ document.getElementById('search').addEventListener('input',e=>{
   else showHome();
 });
 
-document.querySelectorAll('.tab').forEach(tab=>{
+document.querySelectorAll('.tab[data-c]').forEach(tab=>{
   tab.addEventListener('click',()=>{
     document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
     tab.classList.add('on');
