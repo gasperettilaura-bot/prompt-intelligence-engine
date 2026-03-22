@@ -62,7 +62,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .tab[data-c="D"].on{border-color:var(--cD);color:var(--cD);background:rgba(251,191,36,0.08)}
 
 /* MAIN LAYOUT */
-.lay{display:grid;grid-template-columns:200px 1fr 0px;flex:1;overflow:hidden;transition:grid-template-columns 0.3s ease;min-height:0}
+.lay{display:grid;grid-template-columns:200px 1fr 0px;flex:1;overflow:hidden;min-height:0}
 .lay.open{grid-template-columns:200px 1fr 400px}
 
 /* SIDEBAR */
@@ -650,7 +650,7 @@ function selectPrompt(id){
   const color=mcc(p);
   const cat=p.category_de||p.category||'';
   const ser=p.series||'';
-  const tags=(p.tags||[]);
+  const tags=safeTags(p.tags);
 
   // Anatomy
   const anatomy=parseAnatomy(p.prompt_text||'');
@@ -788,14 +788,15 @@ function generateMaster(p,anatomy){
 }
 
 // === SIMILARITY ENGINE ===
+function safeTags(t){return Array.isArray(t)?t:typeof t==='string'?t.split(',').map(s=>s.trim()).filter(Boolean):[]}
 function findSimilar(target){
-  const tTags=new Set((target.tags||[]).map(t=>t.toLowerCase()));
+  const tTags=new Set(safeTags(target.tags).map(t=>t.toLowerCase()));
   const tCat=(target.category_de||'').toLowerCase();
   const tWords=new Set((target.title||'').toLowerCase().split(/\s+/).filter(w=>w.length>3));
 
   return DB.filter(p=>p.id!==target.id).map(p=>{
     let score=0;
-    const pTags=new Set((p.tags||[]).map(t=>t.toLowerCase()));
+    const pTags=new Set(safeTags(p.tags).map(t=>t.toLowerCase()));
     const pCat=(p.category_de||'').toLowerCase();
     const pWords=new Set((p.title||'').toLowerCase().split(/\s+/).filter(w=>w.length>3));
 
