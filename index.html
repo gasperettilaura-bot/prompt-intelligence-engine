@@ -331,23 +331,16 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
   <div class="res" id="main-content">
     <!-- HOME VIEW (default) -->
     <div id="home-view" class="home">
-      <div class="home-section">
-        <div class="home-title"><span class="ht-icon">📦</span> Prompt-Serien</div>
-        <div class="home-subtitle">Kuratierte Sammlungen — klicke eine Serie um alle Prompts zu sehen</div>
-        <div class="series-grid" id="series-grid"></div>
-      </div>
-      <div class="home-section">
-        <div class="home-title"><span class="ht-icon">🕐</span> Zuletzt verwendet</div>
-        <div class="recent-list" id="recent-list">
-          <div style="color:var(--text3);font-size:12px;padding:12px">Noch keine Prompts verwendet — klicke auf einen Prompt und markiere ihn als "Genutzt"</div>
-        </div>
-      </div>
-      <div class="home-section">
+      <!-- Favoriten & Zuletzt: nur sichtbar wenn Content da -->
+      <div class="home-section" id="fav-section" style="display:none">
         <div class="home-title"><span class="ht-icon">⭐</span> Deine Favoriten</div>
-        <div class="recent-list" id="fav-list">
-          <div style="color:var(--text3);font-size:12px;padding:12px">Noch keine Favoriten — markiere Prompts mit ★ um sie hier zu sehen</div>
-        </div>
+        <div class="recent-list" id="fav-list"></div>
       </div>
+      <div class="home-section" id="recent-section" style="display:none">
+        <div class="home-title"><span class="ht-icon">🕐</span> Zuletzt verwendet</div>
+        <div class="recent-list" id="recent-list"></div>
+      </div>
+      <!-- Workflow-Chains: Premium-Platz oben -->
       <div class="home-section">
         <div class="home-title"><span class="ht-icon">🔗</span> Workflow-Chains</div>
         <div class="home-subtitle">Prompt-Ketten für konkrete Use Cases — Schritt für Schritt zum Ergebnis</div>
@@ -355,6 +348,11 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
       </div>
       <!-- WORKFLOW DETAIL (expandable) -->
       <div id="wf-detail-container" style="display:none"></div>
+      <!-- Serien: kompakter, ohne redundanten Subtitle -->
+      <div class="home-section">
+        <div class="home-title"><span class="ht-icon">📦</span> Prompt-Serien</div>
+        <div class="series-grid" id="series-grid"></div>
+      </div>
     </div>
     <!-- SEARCH RESULTS VIEW -->
     <div id="results-view" style="display:none;padding:12px">
@@ -552,12 +550,11 @@ function renderSeriesTiles(){
 
 // === RECENT USED ===
 function renderRecentUsed(){
+  const section=document.getElementById('recent-section');
   const list=document.getElementById('recent-list');
   const recent=recentUsed.slice(0,10).map(id=>DB.find(p=>p.id===id)).filter(Boolean);
-  if(!recent.length){
-    list.innerHTML='<div style="color:var(--text3);font-size:12px;padding:12px">Noch keine Prompts verwendet — klicke auf einen Prompt und markiere ihn als "Genutzt"</div>';
-    return;
-  }
+  if(!recent.length){section.style.display='none';return;}
+  section.style.display='';
   list.innerHTML=recent.map(p=>`<div class="recent-item fi" onclick="selectPrompt('${p.id}')">
     <div class="ri-dot" style="background:${mcc(p)}"></div>
     <div class="ri-info"><div class="ri-title">${p.title}</div><div class="ri-meta">${p.category_de||p.category||''}</div></div>
@@ -566,12 +563,11 @@ function renderRecentUsed(){
 
 // === FAVORITES ===
 function renderFavorites(){
+  const section=document.getElementById('fav-section');
   const list=document.getElementById('fav-list');
   const favList=DB.filter(p=>favs[p.id]);
-  if(!favList.length){
-    list.innerHTML='<div style="color:var(--text3);font-size:12px;padding:12px">Noch keine Favoriten — markiere Prompts mit ★ um sie hier zu sehen</div>';
-    return;
-  }
+  if(!favList.length){section.style.display='none';return;}
+  section.style.display='';
   list.innerHTML=favList.slice(0,10).map(p=>`<div class="recent-item fi" onclick="selectPrompt('${p.id}')">
     <div class="ri-dot" style="background:${mcc(p)}"></div>
     <div class="ri-info"><div class="ri-title">${p.title}</div><div class="ri-meta">${p.category_de||p.category||''}</div></div>
