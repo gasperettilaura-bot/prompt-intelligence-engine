@@ -62,11 +62,11 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .tab[data-c="D"].on{border-color:var(--cD);color:var(--cD);background:rgba(251,191,36,0.08)}
 
 /* MAIN LAYOUT */
-.lay{display:grid;grid-template-columns:200px 1fr 0px;flex:1;overflow:hidden;transition:grid-template-columns 0.3s ease}
+.lay{display:grid;grid-template-columns:200px 1fr 0px;flex:1;overflow:hidden;transition:grid-template-columns 0.3s ease;min-height:0}
 .lay.open{grid-template-columns:200px 1fr 400px}
 
 /* SIDEBAR */
-.side{padding:12px;border-right:1px solid var(--border);overflow-y:auto;background:rgba(8,8,13,0.3)}
+.side{padding:12px;border-right:1px solid var(--border);overflow-y:auto;background:rgba(8,8,13,0.3);min-height:0}
 .ftitle{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--text3);margin:12px 0 6px;padding:0 8px}
 .ftitle:first-child{margin-top:4px}
 .fitem{display:flex;align-items:center;justify-content:space-between;padding:6px 8px;border-radius:6px;font-size:11px;color:var(--text2);cursor:pointer;transition:var(--t);min-height:32px}
@@ -75,13 +75,13 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .fcount{font-size:9px;color:var(--text3);background:var(--glass);padding:1px 5px;border-radius:8px}
 
 /* RESULTS */
-.res{overflow-y:auto;padding:12px}
+.res{overflow-y:auto;padding:0;min-height:0}
 .res-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;padding:0 4px}
 .res-cnt{font-size:12px;color:var(--text2)}
 .res-sort select{background:var(--glass);border:1px solid var(--border);border-radius:6px;color:var(--text2);padding:3px 6px;font-size:10px;font-family:inherit;cursor:pointer}
 
 /* HOME / DASHBOARD VIEW */
-.home{padding:24px;overflow-y:auto}
+.home{padding:24px;overflow-y:auto;height:100%}
 .home-section{margin-bottom:32px}
 .home-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:12px;display:flex;align-items:center;gap:8px}
 .home-title .ht-icon{font-size:16px}
@@ -244,32 +244,42 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
   .lay.open{grid-template-columns:180px 1fr 360px}
 }
 @media (max-width: 1024px) {
-  .lay{grid-template-columns:0px 1fr 0px}
-  .lay.open{grid-template-columns:0px 1fr 380px}
-  .lay.sidebar-open{grid-template-columns:220px 1fr 0px}
-  .side{position:absolute;left:0;top:0;bottom:0;width:220px;z-index:50;background:var(--bg2);transform:translateX(-100%);transition:transform 0.3s ease}
+  .lay{grid-template-columns:1fr !important}
+  .lay.open{grid-template-columns:1fr !important}
+  .side{position:fixed;left:0;top:0;bottom:0;width:260px;z-index:200;background:var(--bg2);border-right:1px solid var(--border2);transform:translateX(-100%);transition:transform 0.3s ease;padding-top:60px}
   .lay.sidebar-open .side{transform:translateX(0)}
+  .det{position:fixed;inset:0;z-index:150;background:var(--bg);overflow-y:auto;transform:translateX(100%);transition:transform 0.3s ease;pointer-events:none}
+  .lay.open .det{transform:translateX(0);pointer-events:auto}
   .hdr{padding:10px 12px;gap:10px}
   .hstats{display:none}
   .menu-btn{display:flex !important}
+  .home{padding:16px}
+  .wf-grid{grid-template-columns:1fr}
 }
 @media (max-width: 768px) {
-  .lay.open{grid-template-columns:0px 0px 1fr}
-  .det{position:absolute;inset:0;z-index:60;background:var(--bg)}
-  .tabs{padding:6px 12px;gap:3px}
-  .tab{padding:4px 8px;font-size:10px}
+  .tabs{padding:6px 12px;gap:3px;flex-wrap:nowrap}
+  .tab{padding:4px 8px;font-size:10px;flex-shrink:0}
   .series-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
   .series-tile{padding:12px}
-  .home{padding:16px}
+  .st-name{font-size:12px}
+  .wf-card{padding:12px}
+  .wf-name{font-size:12px}
 }
 @media (max-width: 480px) {
   .hdr{flex-wrap:wrap}
   .srch{max-width:100%;order:3;flex-basis:100%}
+  .logo{font-size:14px}
   .series-grid{grid-template-columns:1fr}
+  .wf-grid{grid-template-columns:1fr}
+  .tab{padding:3px 6px;font-size:9px}
 }
 
 /* MENU BUTTON (tablet/mobile) */
 .menu-btn{display:none;width:32px;height:32px;align-items:center;justify-content:center;background:var(--glass);border:1px solid var(--border);border-radius:8px;color:var(--text2);font-size:16px;cursor:pointer;flex-shrink:0}
+
+/* SIDEBAR OVERLAY */
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:199}
+.lay.sidebar-open .sidebar-overlay{display:block}
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
@@ -316,6 +326,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 
 <!-- LAYOUT -->
 <div class="lay" id="layout">
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
   <div class="side" id="sidebar"></div>
   <div class="res" id="main-content">
     <!-- HOME VIEW (default) -->
@@ -708,9 +719,11 @@ function selectPrompt(id){
 }
 
 function closeDetail(){
-  document.getElementById('layout').classList.remove('open');
+  const lay=document.getElementById('layout');
+  lay.classList.remove('open');
   document.querySelectorAll('.card.on').forEach(c=>c.classList.remove('on'));
-  document.getElementById('det').innerHTML='<div class="det-empty">Wähle einen Prompt<br>um die Analyse zu sehen</div>';
+  const det=document.getElementById('det');
+  det.innerHTML='<div class="det-empty">Wähle einen Prompt<br>um die Analyse zu sehen</div>';
   S.sel=null;
 }
 
@@ -875,6 +888,9 @@ function filterCat(cat){
 function toggleSidebar(){
   document.getElementById('layout').classList.toggle('sidebar-open');
 }
+function closeSidebar(){
+  document.getElementById('layout').classList.remove('sidebar-open');
+}
 
 // === MODAL ===
 function openAddModal(){document.getElementById('modal').classList.add('show')}
@@ -991,46 +1007,166 @@ document.querySelector('.logo').addEventListener('keydown',e=>{if(e.key==='Enter
 
 // === WORKFLOW CHAINS (curated) ===
 const WORKFLOWS = [
-  {name:"Product Launch",desc:"Von Idee bis Go-Live — der komplette Launch-Workflow",steps:[
+  // === BUSINESS & MONEY ===
+  {name:"Product Launch",desc:"Von Idee bis Go-Live — der komplette Launch-Workflow",icon:"🚀",steps:[
     {label:"Marktforschung",kw:["market","audience","niche","competitor","research","analyse"]},
     {label:"Produkt-Konzept",kw:["product","idea","validator","concept","blueprint","business"]},
     {label:"Brand Identity",kw:["brand","identity","positioning","value","name","define"]},
     {label:"Sales Copy",kw:["sales","copy","headline","conversion","offer","landing"]},
     {label:"Launch Marketing",kw:["launch","email","campaign","announcement","funnel","marketing"]}
   ]},
-  {name:"Content Creation",desc:"Von Zielgruppe bis Published — Content der konvertiert",steps:[
+  {name:"Freelance Money",desc:"Skills monetarisieren — vom Skill zum Cashflow",icon:"💰",steps:[
+    {label:"Skill Audit",kw:["skill","cash","offer","service","freelance"]},
+    {label:"Portfolio",kw:["portfolio","showcase","case study","testimonial","project"]},
+    {label:"Pricing & Angebot",kw:["pricing","proposal","offer","package","rate","architect"]},
+    {label:"Client Gewinnung",kw:["client","lead","outreach","pitch","acquisition"]},
+    {label:"Skalieren",kw:["automate","scale","system","passive","template"]}
+  ]},
+  {name:"Finanzen & Wealth",desc:"Schulden abbauen, Budget optimieren, Vermögen aufbauen",icon:"📊",steps:[
+    {label:"Budget erstellen",kw:["budget","spending","money system","finance","tracker"]},
+    {label:"Schulden eliminieren",kw:["debt","repayment","payoff","eliminator","consolidat"]},
+    {label:"Sparen & Investieren",kw:["savings","invest","wealth","reinvest","income"]},
+    {label:"Side Income",kw:["side income","passive income","monetize","money-making","cash"]},
+    {label:"Money Mindset",kw:["wealth mindset","financial habit","money","freedom","identity"]}
+  ]},
+  {name:"SaaS & Startup",desc:"Von der Idee zum skalierbaren Business",icon:"⚡",steps:[
+    {label:"Idee validieren",kw:["idea","validator","niche","market","opportunity"]},
+    {label:"Business Model",kw:["business model","saas","pricing","revenue","offer"]},
+    {label:"MVP bauen",kw:["mvp","product","build","launch","blueprint"]},
+    {label:"Growth Hacking",kw:["growth","scale","viral","hack","accelerat"]},
+    {label:"CEO Playbook",kw:["ceo","strategist","consultant","leadership","million"]}
+  ]},
+
+  // === CONTENT & MARKETING ===
+  {name:"Content Creation",desc:"Von Zielgruppe bis Published — Content der konvertiert",icon:"✍️",steps:[
     {label:"Zielgruppe",kw:["audience","persona","target","pain point","deep dive"]},
     {label:"Strategie & Plan",kw:["content strategy","calendar","plan","pillar","editorial"]},
     {label:"Hook & Headline",kw:["hook","headline","scroll","attention","viral"]},
     {label:"Schreiben",kw:["write","draft","blog","article","creator","content"]},
     {label:"Optimierung",kw:["optimize","seo","keyword","rewrite","repurpos"]}
   ]},
-  {name:"Personal Branding",desc:"Finde deine Stimme und baue deine Marke auf",steps:[
+  {name:"Social Media Mastery",desc:"Viral gehen auf Instagram, TikTok, LinkedIn & Co",icon:"📱",steps:[
+    {label:"Content-Ideen",kw:["viral","idea","trend","topic","brainstorm"]},
+    {label:"Captions & Hooks",kw:["caption","hook","scroll","reel","carousel"]},
+    {label:"Visual Content",kw:["instagram","social media","creative","visual","post"]},
+    {label:"Hashtags & SEO",kw:["hashtag","seo","keyword","discoverability","algorithm"]},
+    {label:"Engagement & Growth",kw:["engagement","growth","community","follower","audience"]}
+  ]},
+  {name:"YouTube Empire",desc:"Channel aufbauen, Scripte schreiben, viral gehen",icon:"🎬",steps:[
+    {label:"Video-Ideen",kw:["youtube","video idea","viral","topic","trend"]},
+    {label:"Script schreiben",kw:["script","youtube script","outline","storyboard"]},
+    {label:"SEO & Titel",kw:["youtube seo","thumbnail","title","click","algorithm"]},
+    {label:"Faceless Channel",kw:["faceless","automate","channel","passive","content"]},
+    {label:"Monetarisierung",kw:["monetiz","revenue","sponsor","affiliate","income"]}
+  ]},
+  {name:"Email Marketing",desc:"Newsletter, Funnels, Sequences die konvertieren",icon:"📧",steps:[
+    {label:"Lead Magnet",kw:["lead magnet","opt-in","freebie","download","capture"]},
+    {label:"Email Sequence",kw:["email","sequence","funnel","nurture","campaign"]},
+    {label:"Subject Lines",kw:["subject","headline","open rate","click","hook"]},
+    {label:"Sales Emails",kw:["sales email","conversion","offer","pitch","persuasi"]},
+    {label:"Automation",kw:["automate","drip","workflow","trigger","segment"]}
+  ]},
+  {name:"Copywriting Pro",desc:"Headlines, Hooks, Sales Copy die verkauft",icon:"🖊️",steps:[
+    {label:"Headline Formeln",kw:["headline","hook","scroll-stopper","attention","formula"]},
+    {label:"Sales Copy",kw:["sales","copy","persuasi","conversion","offer"]},
+    {label:"Ad Creatives",kw:["ad","creative","facebook","google","campaign"]},
+    {label:"CTA Optimierung",kw:["call to action","cta","button","click","boost"]},
+    {label:"A/B Testing",kw:["rewrite","variation","test","optimize","improve"]}
+  ]},
+
+  // === PERSONAL DEVELOPMENT ===
+  {name:"Personal Branding",desc:"Finde deine Stimme und baue deine Marke auf",icon:"🌟",steps:[
     {label:"Selbsterkenntnis",kw:["self","identity","strengths","values","personality","belief"]},
     {label:"Brand Identität",kw:["personal brand","identity","unique","positioning","define"]},
     {label:"Content Authority",kw:["authority","thought leader","strategy","expertise"]},
     {label:"Social Presence",kw:["linkedin","instagram","social","profile","bio"]},
     {label:"Wachstum",kw:["community","engagement","network","audience","growth"]}
   ]},
-  {name:"Freelance Money",desc:"Skills monetarisieren — vom Skill zum Cashflow",steps:[
-    {label:"Skill Audit",kw:["skill","cash","offer","service","freelance"]},
-    {label:"Portfolio",kw:["portfolio","showcase","case study","testimonial","project"]},
-    {label:"Pricing",kw:["pricing","proposal","offer","package","rate","architect"]},
-    {label:"Client Gewinnung",kw:["client","lead","outreach","pitch","acquisition"]},
-    {label:"Skalieren",kw:["automate","scale","system","passive","template"]}
+  {name:"Karriere-Boost",desc:"CV optimieren, Interview meistern, Traumjob landen",icon:"🎯",steps:[
+    {label:"Skills Assessment",kw:["skill","strength","experience","gap","career"]},
+    {label:"CV & Resume",kw:["resume","cv","ats","keyword","experience"]},
+    {label:"Cover Letter",kw:["cover letter","application","motivation","apply"]},
+    {label:"Interview Prep",kw:["interview","question","answer","prepare","practice"]},
+    {label:"Salary Negotiation",kw:["negotiat","salary","offer","compensation","raise"]}
   ]},
-  {name:"Presentation Pro",desc:"Vom leeren Slide zur Standing Ovation",steps:[
+  {name:"Produktivität 10x",desc:"Fokus, Habits, Systeme — mehr schaffen in weniger Zeit",icon:"⚙️",steps:[
+    {label:"Fokus-System",kw:["focus","time","block","deep work","distraction"]},
+    {label:"Task Management",kw:["task","organiz","priorit","list","plan"]},
+    {label:"Habits & Routinen",kw:["habit","routine","morning","daily","stack"]},
+    {label:"Energie Management",kw:["energy","burnout","recovery","stress","balance"]},
+    {label:"Automatisierung",kw:["automate","system","template","shortcut","workflow"]}
+  ]},
+
+  // === HEALTH & SPIRIT ===
+  {name:"Gesundheit & Fitness",desc:"Fitness, Ernährung, Schlaf, Mental Health",icon:"💪",steps:[
+    {label:"Fitness Plan",kw:["fitness","exercise","workout","program","training"]},
+    {label:"Ernährung",kw:["nutrition","meal","diet","food","recipe"]},
+    {label:"Schlaf optimieren",kw:["sleep","recovery","rest","quality","routine"]},
+    {label:"Stress abbauen",kw:["stress","reduc","relax","calm","mindful"]},
+    {label:"Gewohnheiten ändern",kw:["habit","change","transform","health","wellness"]}
+  ]},
+  {name:"Spiritualität & Mindset",desc:"Innere Arbeit, Shadow Work, Selbsterkenntnis",icon:"🔮",steps:[
+    {label:"Selbsterkenntnis",kw:["self-discovery","identity","belief","core","inner"]},
+    {label:"Shadow Work",kw:["shadow","blind spot","pattern","sabotage","critic"]},
+    {label:"Emotional Clarity",kw:["emotion","feeling","clarity","check-in","mirror"]},
+    {label:"Manifestation",kw:["manifest","vision","future","alignment","energy"]},
+    {label:"Mindset Shift",kw:["mindset","transform","paradigm","perspective","unstoppable"]}
+  ]},
+
+  // === DESIGN & PRESENTATIONS ===
+  {name:"Presentation Pro",desc:"Vom leeren Slide zur Standing Ovation",icon:"📊",steps:[
     {label:"Struktur",kw:["outline","structure","presentation","talk","keynote"]},
     {label:"Slide Design",kw:["slide","visual","design","layout","deck"]},
     {label:"Storytelling",kw:["story","narrative","opening","hook","engage"]},
     {label:"Call-to-Action",kw:["call to action","closing","cta","next step","finish"]}
   ]},
-  {name:"AI Prompt Mastery",desc:"Vom Anfänger zum Prompt Engineering Pro",steps:[
+  {name:"Design & Visual",desc:"Grafiken, Canva, Brand Design, Image Generation",icon:"🎨",steps:[
+    {label:"Brand Design",kw:["brand","logo","color","visual identity","style"]},
+    {label:"Canva & Templates",kw:["canva","template","design","graphic","layout"]},
+    {label:"Image Generation",kw:["image","generat","midjourney","dall-e","visual","illustration"]},
+    {label:"Infografiken",kw:["infographic","chart","data visual","diagram"]},
+    {label:"Social Graphics",kw:["social media","post","carousel","story","creative"]}
+  ]},
+
+  // === LEGAL & DOCUMENTS ===
+  {name:"Legal & Verträge",desc:"Verträge erstellen, NDAs, rechtliche Dokumente",icon:"📋",steps:[
+    {label:"Verträge erstellen",kw:["contract","agreement","terms","freelance","builder"]},
+    {label:"NDA & Legal",kw:["nda","non-disclosure","legal","confidential"]},
+    {label:"Dokumente übersetzen",kw:["translate","document","legal","summary","plain"]},
+    {label:"Leasing & Loan",kw:["lease","loan","mortgage","rent","agreement"]}
+  ]},
+
+  // === TRAVEL ===
+  {name:"Reise-Hacks",desc:"Günstige Flüge, Hotel-Deals, perfekte Reisepläne",icon:"✈️",steps:[
+    {label:"Flug-Deals finden",kw:["flight","deal","cheap","fare","airline","budget"]},
+    {label:"Hotel-Hacks",kw:["hotel","luxury","less","booking","accommodation","5-star"]},
+    {label:"Reiseplan erstellen",kw:["itinerary","travel","plan","route","destination"]},
+    {label:"Budget optimieren",kw:["budget","save","cheap","cost","money","travel"]}
+  ]},
+
+  // === AI & PROMPT ENGINEERING ===
+  {name:"AI Prompt Mastery",desc:"Vom Anfänger zum Prompt Engineering Pro",icon:"🤖",steps:[
     {label:"Basics",kw:["beginner","basic","learn","chatgpt","prompt","guide","mastery"]},
     {label:"Techniken",kw:["technique","framework","template","method","few-shot"]},
-    {label:"Personas",kw:["persona","role","expert","act as","simulate","mentor"]},
+    {label:"Personas & Rollen",kw:["persona","role","expert","act as","simulate","mentor"]},
     {label:"Workflows",kw:["workflow","chain","automation","pipeline","agent"]},
     {label:"Meta-Level",kw:["meta","optimize","improve","iteration","master","enhance"]}
+  ]},
+  {name:"AI Tools & Automation",desc:"ChatGPT, Tools, Pipelines, Multi-Agent Workflows",icon:"🛠️",steps:[
+    {label:"Tool-Überblick",kw:["tool","ai","chatgpt","alternative","list","comparison"]},
+    {label:"Voice & Style",kw:["voice","style","tone","brand","clone","match"]},
+    {label:"Multimodal",kw:["image","upload","multimodal","vision","analyze"]},
+    {label:"Automation",kw:["automate","pipeline","workflow","integration","agent"]},
+    {label:"Custom GPTs",kw:["custom","gpt","system prompt","instruction","configur"]}
+  ]},
+
+  // === LEARNING ===
+  {name:"10x Schneller Lernen",desc:"Lernstrategien, Mental Models, Skill Mastery",icon:"🧠",steps:[
+    {label:"Lernstrategie",kw:["learn","study","technique","fast","accelerat","method"]},
+    {label:"Mental Models",kw:["mental model","framework","pattern","thinking","paradigm"]},
+    {label:"Skill Mastery",kw:["skill","mastery","expert","practice","deliberat"]},
+    {label:"Memory & Retention",kw:["memory","retention","recall","spaced","palace"]},
+    {label:"Teaching & Sharing",kw:["teach","explain","simplif","mentor","guide"]}
   ]}
 ];
 
@@ -1061,7 +1197,7 @@ function renderWorkflows(){
       return `<span class="wf-step">${s.label}</span>${arrow}`;
     }).join('');
     return `<div class="wf-card fi" onclick="expandWorkflow(${i})" tabindex="0" role="button">
-      <div class="wf-name">${wf.name}</div>
+      <div class="wf-name">${wf.icon||'🔗'} ${wf.name}</div>
       <div class="wf-desc">${wf.desc}</div>
       <div class="wf-steps">${stepsHTML}</div>
     </div>`;
@@ -1087,7 +1223,7 @@ function expandWorkflow(idx){
   container.innerHTML=`<div class="wf-detail fi">
     <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">
       <div>
-        <div class="wf-detail-title">🔗 ${wf.name}</div>
+        <div class="wf-detail-title">${wf.icon||'🔗'} ${wf.name}</div>
         <div class="wf-detail-desc">${wf.desc}</div>
       </div>
       <button class="back-btn" onclick="document.getElementById('wf-detail-container').style.display='none'" style="margin:0">✕ Schließen</button>
