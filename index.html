@@ -18,7 +18,7 @@
   --border2: rgba(255,255,255,0.10);
   --text: #e8e4f0;
   --text2: #9590a8;
-  --text3: #5f5878;
+  --text3: #7a7494;
   --accent: #a882ff;
   --accent2: #c4a8ff;
   --accentG: rgba(168,130,255,0.12);
@@ -287,6 +287,36 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after{animation-duration:0.01ms !important;transition-duration:0.01ms !important}
 }
+
+/* ===== ACCESSIBILITY: FOCUS STATES ===== */
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:var(--r)}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:8px}
+input:focus-visible{outline:2px solid var(--accent);outline-offset:0px}
+.card:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.fitem:focus-visible{outline:2px solid var(--accent);outline-offset:1px;border-radius:6px}
+.tab:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.series-tile:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wf-card:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.recent-item:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.abtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.hbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.back-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* ===== ACCESSIBILITY: FONT SIZE FLOOR ===== */
+.tg{font-size:10px}
+.card-id{font-size:10px}
+.fcount{font-size:10px}
+.ai-l{font-size:10px}
+.tok-l{font-size:10px}
+.wf-step{font-size:10px}
+.st-cat{font-size:10px}
+.wf-arrow{font-size:11px}
+.ftitle{font-size:10px}
+.ri-time{font-size:10px}
+.sim-s{font-size:10px}
+.det-id{font-size:11px}
+.sec-t{font-size:11px}
+.card-id{font-size:10px}
 </style>
 </head>
 <body>
@@ -301,10 +331,10 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 <!-- HEADER -->
 <div class="hdr">
   <button class="menu-btn" id="menuBtn" onclick="toggleSidebar()" aria-label="Menü öffnen">☰</button>
-  <div class="logo" onclick="showHome()" role="button" tabindex="0" aria-label="Zur Startseite">⚡ Prompt Intelligence Engine</div>
+  <div class="logo" onclick="showHome()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();showHome()}" role="button" tabindex="0" aria-label="Zur Startseite">⚡ Prompt Intelligence Engine</div>
   <div class="srch">
     <span class="ico">🔍</span>
-    <input id="search" type="text" placeholder="Suche: Prompts, Tags, Kategorien... (/ zum Fokus)" aria-label="Prompts durchsuchen">
+    <input id="search" type="text" placeholder="Prompts, Tags, Kategorien durchsuchen..." aria-label="Prompts durchsuchen" aria-keyshortcuts="/">
   </div>
   <div class="hstats">
     <div class="sbadge"><b id="st-total">0</b> Prompts</div>
@@ -1235,6 +1265,27 @@ function expandWorkflow(idx){
 
 // === INIT ===
 init();
+
+// === ACCESSIBILITY: KEYBOARD NAVIGATION ===
+// Global delegation: Enter/Space on any role="button" div triggers click
+document.addEventListener('keydown', function(e){
+  if(e.key!=='Enter'&&e.key!==' ')return;
+  const el=e.target;
+  if(el.tagName==='BUTTON'||el.tagName==='A'||el.tagName==='INPUT'||el.tagName==='SELECT'||el.tagName==='TEXTAREA')return;
+  if(el.getAttribute('role')==='button'||el.getAttribute('tabindex')==='0'){
+    e.preventDefault();
+    el.click();
+  }
+});
+
+// "/" shortcut: focus search from anywhere
+document.addEventListener('keydown', function(e){
+  if(e.key==='/'&&e.target.tagName!=='INPUT'&&e.target.tagName!=='TEXTAREA'){
+    e.preventDefault();
+    const s=document.getElementById('search');
+    if(s){s.focus();s.select();}
+  }
+});
 </script>
 </body>
 </html>
