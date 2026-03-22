@@ -38,18 +38,20 @@
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);height:100vh;overflow:hidden;display:flex;flex-direction:column}
 
+/* HEADER */
 .hdr{padding:12px 20px;background:rgba(8,8,13,0.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px;z-index:100;flex-shrink:0}
-.logo{font-size:16px;font-weight:800;letter-spacing:-0.5px;background:linear-gradient(135deg,var(--accent),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;white-space:nowrap}
+.logo{font-size:16px;font-weight:800;letter-spacing:-0.5px;background:linear-gradient(135deg,var(--accent),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;white-space:nowrap;cursor:pointer}
 .srch{flex:1;max-width:560px;position:relative}
 .srch input{width:100%;padding:9px 14px 9px 36px;background:var(--glass);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-size:13px;font-family:inherit;outline:none;transition:var(--t)}
 .srch input:focus{border-color:var(--accent);background:var(--accentG);box-shadow:0 0 20px rgba(168,130,255,0.08)}
 .srch .ico{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:13px}
-.hstats{display:flex;gap:10px;margin-left:auto;flex-shrink:0}
+.hstats{display:flex;gap:8px;margin-left:auto;flex-shrink:0}
 .sbadge{display:flex;align-items:center;gap:5px;padding:5px 10px;background:var(--glass);border:1px solid var(--border);border-radius:8px;font-size:11px;color:var(--text2);white-space:nowrap}
 .sbadge b{color:var(--text);font-weight:600}
 .hbtn{padding:6px 12px;background:var(--glass);border:1px solid var(--border);border-radius:8px;color:var(--text2);font-size:11px;cursor:pointer;transition:var(--t);font-family:inherit}
 .hbtn:hover{background:var(--glass2);color:var(--text)}
 
+/* TABS */
 .tabs{display:flex;padding:6px 20px;gap:4px;background:rgba(8,8,13,0.5);border-bottom:1px solid var(--border);flex-shrink:0;overflow-x:auto}
 .tab{padding:5px 12px;border-radius:8px;font-size:11px;font-weight:500;cursor:pointer;transition:var(--t);white-space:nowrap;border:1px solid transparent;background:transparent;color:var(--text2);font-family:inherit}
 .tab:hover{background:var(--glass);color:var(--text)}
@@ -59,21 +61,83 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .tab[data-c="C"].on{border-color:var(--cC);color:var(--cC);background:rgba(110,231,160,0.08)}
 .tab[data-c="D"].on{border-color:var(--cD);color:var(--cD);background:rgba(251,191,36,0.08)}
 
+/* MAIN LAYOUT */
 .lay{display:grid;grid-template-columns:200px 1fr 0px;flex:1;overflow:hidden;transition:grid-template-columns 0.3s ease}
 .lay.open{grid-template-columns:200px 1fr 400px}
 
+/* SIDEBAR */
 .side{padding:12px;border-right:1px solid var(--border);overflow-y:auto;background:rgba(8,8,13,0.3)}
 .ftitle{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--text3);margin:12px 0 6px;padding:0 8px}
-.fitem{display:flex;align-items:center;justify-content:space-between;padding:5px 8px;border-radius:6px;font-size:11px;color:var(--text2);cursor:pointer;transition:var(--t)}
+.ftitle:first-child{margin-top:4px}
+.fitem{display:flex;align-items:center;justify-content:space-between;padding:6px 8px;border-radius:6px;font-size:11px;color:var(--text2);cursor:pointer;transition:var(--t);min-height:32px}
 .fitem:hover{background:var(--glass);color:var(--text)}
 .fitem.on{background:var(--accentG);color:var(--accent2)}
 .fcount{font-size:9px;color:var(--text3);background:var(--glass);padding:1px 5px;border-radius:8px}
 
+/* RESULTS */
 .res{overflow-y:auto;padding:12px}
 .res-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;padding:0 4px}
 .res-cnt{font-size:12px;color:var(--text2)}
 .res-sort select{background:var(--glass);border:1px solid var(--border);border-radius:6px;color:var(--text2);padding:3px 6px;font-size:10px;font-family:inherit;cursor:pointer}
 
+/* HOME / DASHBOARD VIEW */
+.home{padding:24px;overflow-y:auto}
+.home-section{margin-bottom:32px}
+.home-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.home-title .ht-icon{font-size:16px}
+.home-subtitle{font-size:11px;color:var(--text3);margin-bottom:16px}
+
+/* SERIES TILES */
+.series-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.series-tile{padding:16px;background:var(--glass);border:1px solid var(--border);border-radius:var(--r2);cursor:pointer;transition:all 0.25s ease;position:relative;overflow:hidden}
+.series-tile:hover{background:var(--glass2);border-color:var(--border2);transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,0.3)}
+.series-tile::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--blue));opacity:0;transition:opacity 0.25s ease}
+.series-tile:hover::before{opacity:1}
+.st-name{font-size:13px;font-weight:700;margin-bottom:6px;line-height:1.3}
+.st-count{font-size:10px;color:var(--text3);margin-bottom:8px}
+.st-cats{display:flex;gap:4px;flex-wrap:wrap}
+.st-cat{padding:1px 6px;border-radius:8px;font-size:9px;background:rgba(255,255,255,0.03);color:var(--text3)}
+
+/* RECENTLY USED LIST */
+.recent-list{display:flex;flex-direction:column;gap:6px}
+.recent-item{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--glass);border:1px solid var(--border);border-radius:var(--r);cursor:pointer;transition:var(--t)}
+.recent-item:hover{background:var(--glass2);border-color:var(--border2)}
+.ri-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.ri-info{flex:1;min-width:0}
+.ri-title{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ri-meta{font-size:10px;color:var(--text3);margin-top:2px}
+.ri-time{font-size:9px;color:var(--text3);flex-shrink:0}
+
+/* WORKFLOW CHAINS */
+.wf-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px}
+.wf-card{padding:16px;background:var(--glass);border:1px solid var(--border);border-radius:var(--r2);cursor:pointer;transition:all 0.25s ease;position:relative;overflow:hidden}
+.wf-card:hover{background:var(--glass2);border-color:var(--border2);transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,0.3)}
+.wf-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--green),var(--blue));opacity:0.6}
+.wf-name{font-size:14px;font-weight:700;margin-bottom:4px}
+.wf-desc{font-size:11px;color:var(--text2);margin-bottom:12px;line-height:1.4}
+.wf-steps{display:flex;gap:4px;align-items:center;flex-wrap:wrap}
+.wf-step{padding:3px 8px;background:rgba(110,231,160,0.06);border:1px solid rgba(110,231,160,0.12);border-radius:6px;font-size:9px;color:var(--green);font-weight:500}
+.wf-arrow{color:var(--text3);font-size:10px}
+
+/* WORKFLOW DETAIL */
+.wf-detail{padding:20px;background:var(--glass);border:1px solid var(--border);border-radius:var(--r2);margin-bottom:16px}
+.wf-detail-title{font-size:18px;font-weight:700;margin-bottom:4px}
+.wf-detail-desc{font-size:12px;color:var(--text2);margin-bottom:16px}
+.wf-timeline{position:relative;padding-left:24px}
+.wf-timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--green),var(--blue),var(--accent))}
+.wf-tl-step{position:relative;margin-bottom:16px;padding-bottom:4px}
+.wf-tl-step::before{content:'';position:absolute;left:-20px;top:4px;width:12px;height:12px;border-radius:50%;background:var(--bg2);border:2px solid var(--green);z-index:1}
+.wf-tl-step:nth-child(2)::before{border-color:var(--blue)}
+.wf-tl-step:nth-child(3)::before{border-color:var(--accent)}
+.wf-tl-step:nth-child(4)::before{border-color:var(--yellow)}
+.wf-tl-step:nth-child(5)::before{border-color:var(--red)}
+.wf-tl-label{font-size:12px;font-weight:700;margin-bottom:6px;color:var(--text)}
+.wf-tl-prompts{display:flex;flex-direction:column;gap:4px}
+.wf-tl-prompt{padding:6px 10px;background:var(--glass);border:1px solid var(--border);border-radius:6px;font-size:11px;color:var(--text2);cursor:pointer;transition:var(--t);display:flex;align-items:center;gap:6px}
+.wf-tl-prompt:hover{background:var(--glass2);color:var(--text)}
+.wf-tl-prompt .wf-p-id{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text3)}
+
+/* CARDS */
 .card{padding:12px 14px;background:var(--glass);border:1px solid var(--border);border-radius:var(--r);cursor:pointer;transition:var(--t);position:relative;margin-bottom:6px}
 .card:hover{background:var(--glass2);border-color:var(--border2);transform:translateX(2px)}
 .card.on{border-color:var(--accent);background:var(--accentG)}
@@ -87,9 +151,9 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .card-m{display:flex;gap:4px;flex-wrap:wrap}
 .tg{padding:1px 6px;background:rgba(255,255,255,0.03);border-radius:8px;font-size:9px;color:var(--text3)}
 .tg.cat{color:var(--accent);background:rgba(168,130,255,0.06)}
-.tg.acc{color:var(--blue);background:rgba(96,165,250,0.06)}
 .tg.ser{color:var(--green);background:rgba(110,231,160,0.06)}
 
+/* DETAIL PANEL */
 .det{border-left:1px solid var(--border);overflow-y:auto;background:rgba(8,8,13,0.4);backdrop-filter:blur(10px)}
 .det-empty{display:flex;align-items:center;justify-content:center;height:100%;color:var(--text3);font-size:12px;padding:20px;text-align:center;line-height:1.6}
 .det-c{padding:16px}
@@ -97,16 +161,18 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .det-id{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text3);margin-bottom:3px}
 .det-t{font-size:18px;font-weight:700;letter-spacing:-0.3px;margin-bottom:6px}
 .det-mr{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px}
-.det-acts{display:flex;gap:6px;margin-top:10px}
+.det-acts{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
 .abtn{padding:5px 12px;border-radius:6px;font-size:11px;font-weight:500;cursor:pointer;transition:var(--t);border:1px solid var(--border);background:var(--glass);color:var(--text2);font-family:inherit}
 .abtn:hover{background:var(--glass2);color:var(--text)}
 .abtn.af{color:var(--yellow);border-color:rgba(251,191,36,0.25)}
 .abtn.au{color:var(--green);border-color:rgba(110,231,160,0.25)}
 .abtn.pr{background:var(--accentG);border-color:rgba(168,130,255,0.3);color:var(--accent2)}
+.det .close-btn{position:absolute;top:12px;right:12px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:6px;background:var(--glass);border:1px solid var(--border);color:var(--text3);cursor:pointer;font-size:14px;transition:var(--t)}
+.det .close-btn:hover{color:var(--text);background:var(--glass2)}
 
 .sec{margin-bottom:16px}
 .sec-t{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:8px;display:flex;align-items:center;gap:5px}
-.orig{padding:12px;background:var(--glass);border:1px solid var(--border);border-radius:var(--r);font-size:12px;line-height:1.7;white-space:pre-wrap}
+.orig{padding:12px;background:var(--glass);border:1px solid var(--border);border-radius:var(--r);font-size:12px;line-height:1.7;white-space:pre-wrap;position:relative}
 .orig .ph{color:var(--yellow);font-weight:600}
 
 .anat{display:flex;flex-direction:column;gap:6px}
@@ -136,6 +202,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .ch-n{font-size:11px;font-weight:600;color:var(--accent2);margin-bottom:3px}
 .ch-s{font-size:10px;color:var(--text2);line-height:1.5}
 
+/* MODAL */
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:500;align-items:center;justify-content:center;backdrop-filter:blur(5px)}
 .modal-bg.show{display:flex}
 .modal{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--r2);padding:24px;width:560px;max-height:80vh;overflow-y:auto}
@@ -153,16 +220,61 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .mbtn.save{background:var(--accentG);border-color:rgba(168,130,255,0.3);color:var(--accent2)}
 .mbtn.save:hover{background:rgba(168,130,255,0.2)}
 
+/* SCROLLBARS */
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.06);border-radius:3px}::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,0.12)}
 
+/* ANIMATIONS */
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}.fi{animation:fadeIn 0.25s ease-out}
 @keyframes slideIn{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:translateX(0)}}.si{animation:slideIn 0.2s ease-out}
 
+/* LOADER */
 #loader{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg);z-index:999;flex-direction:column;gap:16px}
 #loader .lt{font-size:24px;font-weight:700;background:linear-gradient(135deg,#a882ff,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 #loader .ls{color:#9590a8;font-size:13px}
 .spinner{width:32px;height:32px;border:3px solid rgba(168,130,255,0.15);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
+
+/* BACK BUTTON (for series view) */
+.back-btn{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;background:var(--glass);border:1px solid var(--border);border-radius:8px;color:var(--text2);font-size:11px;cursor:pointer;transition:var(--t);margin-bottom:12px;font-family:inherit}
+.back-btn:hover{background:var(--glass2);color:var(--text)}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1200px) {
+  .lay{grid-template-columns:180px 1fr 0px}
+  .lay.open{grid-template-columns:180px 1fr 360px}
+}
+@media (max-width: 1024px) {
+  .lay{grid-template-columns:0px 1fr 0px}
+  .lay.open{grid-template-columns:0px 1fr 380px}
+  .lay.sidebar-open{grid-template-columns:220px 1fr 0px}
+  .side{position:absolute;left:0;top:0;bottom:0;width:220px;z-index:50;background:var(--bg2);transform:translateX(-100%);transition:transform 0.3s ease}
+  .lay.sidebar-open .side{transform:translateX(0)}
+  .hdr{padding:10px 12px;gap:10px}
+  .hstats{display:none}
+  .menu-btn{display:flex !important}
+}
+@media (max-width: 768px) {
+  .lay.open{grid-template-columns:0px 0px 1fr}
+  .det{position:absolute;inset:0;z-index:60;background:var(--bg)}
+  .tabs{padding:6px 12px;gap:3px}
+  .tab{padding:4px 8px;font-size:10px}
+  .series-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
+  .series-tile{padding:12px}
+  .home{padding:16px}
+}
+@media (max-width: 480px) {
+  .hdr{flex-wrap:wrap}
+  .srch{max-width:100%;order:3;flex-basis:100%}
+  .series-grid{grid-template-columns:1fr}
+}
+
+/* MENU BUTTON (tablet/mobile) */
+.menu-btn{display:none;width:32px;height:32px;align-items:center;justify-content:center;background:var(--glass);border:1px solid var(--border);border-radius:8px;color:var(--text2);font-size:16px;cursor:pointer;flex-shrink:0}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after{animation-duration:0.01ms !important;transition-duration:0.01ms !important}
+}
 </style>
 </head>
 <body>
@@ -176,71 +288,106 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 
 <!-- HEADER -->
 <div class="hdr">
-  <div class="logo">⚡ Prompt Intelligence Engine</div>
+  <button class="menu-btn" id="menuBtn" onclick="toggleSidebar()" aria-label="Menü öffnen">☰</button>
+  <div class="logo" onclick="showHome()" role="button" tabindex="0" aria-label="Zur Startseite">⚡ Prompt Intelligence Engine</div>
   <div class="srch">
     <span class="ico">🔍</span>
-    <input id="search" type="text" placeholder="Suche: Prompts, Tags, Kategorien... (/ zum Fokus)">
+    <input id="search" type="text" placeholder="Suche: Prompts, Tags, Kategorien... (/ zum Fokus)" aria-label="Prompts durchsuchen">
   </div>
   <div class="hstats">
     <div class="sbadge"><b id="st-total">0</b> Prompts</div>
     <div class="sbadge"><b id="st-used">0</b> Genutzt</div>
     <div class="sbadge"><b id="st-fav">0</b> ★</div>
   </div>
-  <button class="hbtn" onclick="openAddModal()">+ Neu</button>
-  <button class="hbtn" onclick="exportAll()">↗ Export</button>
+  <button class="hbtn" onclick="openAddModal()" aria-label="Neuen Prompt hinzufügen">+ Neu</button>
+  <button class="hbtn" onclick="exportAll()" aria-label="Daten exportieren">↗ Export</button>
 </div>
 
 <!-- TABS -->
-<div class="tabs">
-  <button class="tab on" data-c="all">Alle</button>
-  <button class="tab" data-c="A">A: Prompt-Architektur</button>
-  <button class="tab" data-c="B">B: Reasoning & Planning</button>
-  <button class="tab" data-c="C">C: Agentic & Automation</button>
-  <button class="tab" data-c="D">D: Domain-Anwendungen</button>
-  <button class="tab" data-c="fav">★ Favoriten</button>
-  <button class="tab" data-c="used">✓ Genutzt</button>
+<div class="tabs" role="tablist">
+  <button class="tab on" data-c="all" role="tab" aria-selected="true">Alle</button>
+  <button class="tab" data-c="A" role="tab">A: Prompt-Architektur</button>
+  <button class="tab" data-c="B" role="tab">B: Reasoning & Planning</button>
+  <button class="tab" data-c="C" role="tab">C: Agentic & Automation</button>
+  <button class="tab" data-c="D" role="tab">D: Domain-Anwendungen</button>
+  <button class="tab" data-c="fav" role="tab">★ Favoriten</button>
+  <button class="tab" data-c="used" role="tab">✓ Genutzt</button>
 </div>
 
 <!-- LAYOUT -->
 <div class="lay" id="layout">
   <div class="side" id="sidebar"></div>
-  <div class="res">
-    <div class="res-hdr">
-      <div class="res-cnt" id="res-cnt">0 Ergebnisse</div>
-      <div class="res-sort">
-        <select id="sort">
-          <option value="rel">Relevanz</option>
-          <option value="id+">ID ↑</option>
-          <option value="id-">ID ↓</option>
-          <option value="az">Titel A-Z</option>
-          <option value="cat">Kategorie</option>
-        </select>
+  <div class="res" id="main-content">
+    <!-- HOME VIEW (default) -->
+    <div id="home-view" class="home">
+      <div class="home-section">
+        <div class="home-title"><span class="ht-icon">📦</span> Prompt-Serien</div>
+        <div class="home-subtitle">Kuratierte Sammlungen — klicke eine Serie um alle Prompts zu sehen</div>
+        <div class="series-grid" id="series-grid"></div>
       </div>
+      <div class="home-section">
+        <div class="home-title"><span class="ht-icon">🕐</span> Zuletzt verwendet</div>
+        <div class="recent-list" id="recent-list">
+          <div style="color:var(--text3);font-size:12px;padding:12px">Noch keine Prompts verwendet — klicke auf einen Prompt und markiere ihn als "Genutzt"</div>
+        </div>
+      </div>
+      <div class="home-section">
+        <div class="home-title"><span class="ht-icon">⭐</span> Deine Favoriten</div>
+        <div class="recent-list" id="fav-list">
+          <div style="color:var(--text3);font-size:12px;padding:12px">Noch keine Favoriten — markiere Prompts mit ★ um sie hier zu sehen</div>
+        </div>
+      </div>
+      <div class="home-section">
+        <div class="home-title"><span class="ht-icon">🔗</span> Workflow-Chains</div>
+        <div class="home-subtitle">Prompt-Ketten für konkrete Use Cases — Schritt für Schritt zum Ergebnis</div>
+        <div class="wf-grid" id="wf-grid"></div>
+      </div>
+      <!-- WORKFLOW DETAIL (expandable) -->
+      <div id="wf-detail-container" style="display:none"></div>
     </div>
-    <div id="grid"></div>
+    <!-- SEARCH RESULTS VIEW -->
+    <div id="results-view" style="display:none;padding:12px">
+      <div class="res-hdr">
+        <div class="res-cnt" id="res-cnt">0 Ergebnisse</div>
+        <div class="res-sort">
+          <select id="sort" aria-label="Sortierung">
+            <option value="rel">Relevanz</option>
+            <option value="id+">ID ↑</option>
+            <option value="id-">ID ↓</option>
+            <option value="az">Titel A-Z</option>
+            <option value="cat">Kategorie</option>
+          </select>
+        </div>
+      </div>
+      <div id="grid"></div>
+    </div>
+    <!-- SERIES DETAIL VIEW -->
+    <div id="series-view" style="display:none;padding:12px">
+      <button class="back-btn" onclick="showHome()">← Zurück zu Serien</button>
+      <div id="series-header"></div>
+      <div id="series-grid-detail"></div>
+    </div>
   </div>
-  <div class="det" id="det">
+  <div class="det" id="det" style="position:relative">
     <div class="det-empty">Wähle einen Prompt<br>um die Analyse zu sehen</div>
   </div>
 </div>
 
 <!-- ADD PROMPT MODAL -->
-<div class="modal-bg" id="modal">
+<div class="modal-bg" id="modal" role="dialog" aria-modal="true" aria-label="Neuen Prompt hinzufügen">
   <div class="modal">
     <h2>Neuen Prompt hinzufügen</h2>
-    <label>Prompt Text</label>
+    <label for="m-text">Prompt Text</label>
     <textarea id="m-text" placeholder="Paste deinen Prompt hier..."></textarea>
     <div class="auto-cat" id="auto-cat" style="display:none">
       <div class="auto-cat-title">🤖 Auto-Kategorisierung</div>
       <div class="auto-cat-val" id="auto-cat-val"></div>
     </div>
-    <label>Titel (optional — wird auto-generiert)</label>
+    <label for="m-title">Titel (optional — wird auto-generiert)</label>
     <input id="m-title" placeholder="z.B. Content Strategist">
-    <label>Account</label>
-    <input id="m-account" placeholder="z.B. @dailyprompter">
-    <label>Tags (kommasepariert)</label>
+    <label for="m-tags">Tags (kommasepariert)</label>
     <input id="m-tags" placeholder="z.B. marketing,content,strategy">
-    <label>Serie (optional)</label>
+    <label for="m-series">Serie (optional)</label>
     <input id="m-series" placeholder="z.B. Power Prompts 1/10">
     <div class="modal-btns">
       <button class="mbtn" onclick="closeModal()">Abbrechen</button>
@@ -250,420 +397,707 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 </div>
 
 <script>
-// ==========================================================
-// DATA LOADING — fetch from prompt-data.json
-// ============================================================
-let prompts = [];
-let S = { q:'', cluster:'all', cat:null, acc:null, ser:null, sel:null, used:new Set(), fav:new Set(), sort:'rel' };
+// === STATE ===
+let DB = [], S = {query:'',cluster:'all',category:'',sel:null,view:'home',seriesFilter:null};
+let usage = JSON.parse(localStorage.getItem('pie-usage')||'{}');
+let favs = JSON.parse(localStorage.getItem('pie-favs')||'{}');
+let recentUsed = JSON.parse(localStorage.getItem('pie-recent')||'[]');
+let SERIES = {};
 
-(async function loadData() {
-  const status = document.getElementById('load-status');
-  try {
-    status.textContent = 'Lade Prompt-Datenbank...';
-    const resp = await fetch('prompt-data.json');
-    if (!resp.ok) throw new Error('HTTP ' + resp.status);
-    const data = await resp.json();
-    prompts = data.prompts || data;
-    document.getElementById('loader').remove();
-    boot();
-  } catch(e) {
-    status.innerHTML = 'prompt-data.json nicht gefunden — JSON manuell laden:<br><br><input type="file" id="fb-file" accept=".json" style="color:#9590a8">';
-    document.getElementById('fb-file').addEventListener('change', ev => {
-      const r = new FileReader();
-      r.onload = fe => {
-        const d = JSON.parse(fe.target.result);
-        prompts = d.prompts || d;
-        document.getElementById('loader').remove();
-        boot();
-      };
-      r.readAsText(ev.target.files[0]);
-    });
+// === CLUSTER COLORS ===
+const CC = {A:'#a882ff',B:'#60a5fa',C:'#6ee7a0',D:'#fbbf24'};
+function mc(p){const m=p.meta_cluster||'';return m.charAt(0)}
+function mcc(p){return CC[mc(p)]||'#a882ff'}
+
+// === LOAD DATA ===
+async function init(){
+  const st=document.getElementById('load-status');
+  try{
+    st.textContent='Lade Prompt-Datenbank...';
+    const r=await fetch('prompt-data.json');
+    if(!r.ok)throw new Error('Fetch failed');
+    const d=await r.json();
+    DB=d.prompts||[];
+    st.textContent=`${DB.length} Prompts geladen — Dashboard wird aufgebaut...`;
+    buildSeries();
+    buildSidebar();
+    updateStats();
+    showHome();
+    document.getElementById('loader').style.display='none';
+  }catch(e){
+    st.textContent='Fehler beim Laden: '+e.message;
+    // Fallback: file input
+    const inp=document.createElement('input');inp.type='file';inp.accept='.json';
+    inp.style.cssText='margin-top:16px;color:#9590a8';
+    inp.onchange=async(ev)=>{
+      const f=ev.target.files[0];if(!f)return;
+      const t=await f.text();const d=JSON.parse(t);
+      DB=d.prompts||[];buildSeries();buildSidebar();updateStats();showHome();
+      document.getElementById('loader').style.display='none';
+    };
+    document.getElementById('loader').appendChild(inp);
   }
-})();
-
-function boot() {
-  document.getElementById('st-total').textContent = prompts.length;
-  buildSidebar();
-  bindEvents();
-  filter();
 }
 
-// ============================================================
-// SIDEBAR
-// ============================================================
-function buildSidebar() {
-  const cats={}, accs={}, sers={};
-  prompts.forEach(p => {
-    const ck = p.category;
-    cats[ck] = cats[ck] || { n: p.category_de || p.category_en || ck, c: 0 };
-    cats[ck].c++;
-    if (p.account) accs[p.account] = (accs[p.account]||0) + 1;
-    if (p.series) { const b = p.series.replace(/\s*\d+\/\d+$/,''); sers[b] = (sers[b]||0)+1; }
+// === BUILD SERIES MAP ===
+function buildSeries(){
+  SERIES={};
+  DB.forEach(p=>{
+    let s=p.series||'';if(!s)return;
+    // Normalize: remove x/y numbering to get base name
+    let base=s.replace(/\s*\d+\/\d+\s*$/,'').trim();
+    base=base.replace(/^\d+\/\d+\s*/,'').trim();
+    if(!base||base.length<5)return;
+    // Check alpha ratio
+    let alpha=0;for(let c of base)if(/[a-zA-ZäöüÄÖÜß]/.test(c))alpha++;
+    if(alpha/base.length<0.5)return;
+    if(!SERIES[base])SERIES[base]={prompts:[],cats:new Set()};
+    SERIES[base].prompts.push(p);
+    SERIES[base].cats.add(p.category_de||p.category||'');
   });
-  let h = '<div class="ftitle">Kategorien</div>';
-  Object.entries(cats).sort((a,b) => b[1].c - a[1].c).forEach(([k,v]) => {
-    h += '<div class="fitem" data-f="cat" data-v="'+k+'"><span>'+k+' '+v.n+'</span><span class="fcount">'+v.c+'</span></div>';
-  });
-  h += '<div class="ftitle">Accounts</div>';
-  Object.entries(accs).sort((a,b) => b[1]-a[1]).forEach(([k,v]) => {
-    h += '<div class="fitem" data-f="acc" data-v="'+k+'"><span>'+k+'</span><span class="fcount">'+v+'</span></div>';
-  });
-  h += '<div class="ftitle">Top Serien</div>';
-  Object.entries(sers).sort((a,b) => b[1]-a[1]).slice(0,15).forEach(([k,v]) => {
-    h += '<div class="fitem" data-f="ser" data-v="'+k+'"><span>'+k+'</span><span class="fcount">'+v+'</span></div>';
-  });
-  document.getElementById('sidebar').innerHTML = h;
+  // Only keep series with 3+ prompts
+  Object.keys(SERIES).forEach(k=>{if(SERIES[k].prompts.length<3)delete SERIES[k]});
 }
 
-// ============================================================
-// EVENTS
-// ============================================================
-function bindEvents() {
-  document.getElementById('search').addEventListener('input', e => { S.q = e.target.value.toLowerCase(); filter(); });
-  document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
-    document.querySelectorAll('.tab').forEach(x => x.classList.remove('on'));
-    t.classList.add('on'); S.cluster = t.dataset.c; S.cat=S.acc=S.ser=null;
-    document.querySelectorAll('.fitem').forEach(f => f.classList.remove('on'));
-    filter();
-  }));
-  document.getElementById('sidebar').addEventListener('click', e => {
-    const i = e.target.closest('.fitem'); if(!i) return;
-    const f=i.dataset.f, v=i.dataset.v, was=i.classList.contains('on');
-    document.querySelectorAll('.fitem[data-f="'+f+'"]').forEach(x => x.classList.remove('on'));
-    if(!was){ i.classList.add('on'); S[f]=v; } else S[f]=null;
-    filter();
+// === SIDEBAR (Categories only, NO accounts) ===
+function buildSidebar(){
+  const sb=document.getElementById('sidebar');
+  let cats={};
+  DB.forEach(p=>{const c=p.category_de||p.category||'Sonstige';cats[c]=(cats[c]||0)+1});
+
+  let h='<div class="ftitle">Kategorien</div>';
+  Object.entries(cats).sort((a,b)=>b[1]-a[1]).forEach(([c,n])=>{
+    h+=`<div class="fitem" onclick="filterCat('${c.replace(/'/g,"\\'")}')" data-cat="${c}" tabindex="0" role="button"><span>${c}</span><span class="fcount">${n}</span></div>`;
   });
-  document.getElementById('sort').addEventListener('change', e => { S.sort=e.target.value; filter(); });
-  document.addEventListener('keydown', e => {
-    if(e.key==='/' && document.activeElement.tagName!=='INPUT' && document.activeElement.tagName!=='TEXTAREA'){e.preventDefault();document.getElementById('search').focus()}
-    if(e.key==='Escape'){if(S.sel)closeDet();else if(document.getElementById('modal').classList.contains('show'))closeModal();else document.getElementById('search').blur()}
+
+  // Top Series in sidebar
+  h+='<div class="ftitle" style="margin-top:16px">Top Serien</div>';
+  Object.entries(SERIES).sort((a,b)=>b[1].prompts.length-a[1].prompts.length).slice(0,15).forEach(([name,info])=>{
+    h+=`<div class="fitem" onclick="showSeriesView('${name.replace(/'/g,"\\'")}')" tabindex="0" role="button"><span>${name}</span><span class="fcount">${info.prompts.length}</span></div>`;
   });
+  sb.innerHTML=h;
 }
 
-// ============================================================
-// FILTER + SEARCH
-// ============================================================
-function filter() {
-  let r = prompts.slice();
-  if(S.cluster==='fav') r=r.filter(p=>S.fav.has(p.id));
-  else if(S.cluster==='used') r=r.filter(p=>S.used.has(p.id));
-  else if(S.cluster!=='all') r=r.filter(p=>p.meta_cluster&&p.meta_cluster.startsWith(S.cluster));
-  if(S.cat) r=r.filter(p=>p.category===S.cat);
-  if(S.acc) r=r.filter(p=>p.account===S.acc);
-  if(S.ser) r=r.filter(p=>p.series&&p.series.replace(/\s*\d+\/\d+$/,'')=== S.ser);
-  if(S.q){
-    const terms=S.q.split(/\s+/);
-    r=r.map(p=>{
-      const hay=[p.title,p.prompt_text,p.tags,p.category_de,p.category_en,p.account,p.series,p.id].join(' ').toLowerCase();
-      let sc=0,ok=true;
-      terms.forEach(t=>{if(hay.includes(t)){sc+=(p.title||'').toLowerCase().includes(t)?3:1;sc+=(p.tags||'').toLowerCase().includes(t)?2:0}else ok=false});
-      return Object.assign({},p,{_sc:sc,_ok:ok});
-    }).filter(p=>p._ok);
+// === VIEWS ===
+function showHome(){
+  S.view='home';S.seriesFilter=null;S.query='';
+  document.getElementById('search').value='';
+  document.getElementById('home-view').style.display='';
+  document.getElementById('results-view').style.display='none';
+  document.getElementById('series-view').style.display='none';
+  document.getElementById('layout').classList.remove('open');
+  // Reset tab
+  document.querySelectorAll('.tab').forEach(t=>{t.classList.remove('on');if(t.dataset.c==='all')t.classList.add('on')});
+  S.cluster='all';S.category='';
+  renderSeriesTiles();
+  renderRecentUsed();
+  renderFavorites();
+  renderWorkflows();
+  document.getElementById('wf-detail-container').style.display='none';
+}
+
+function showResults(){
+  S.view='results';
+  document.getElementById('home-view').style.display='none';
+  document.getElementById('results-view').style.display='';
+  document.getElementById('series-view').style.display='none';
+  render();
+}
+
+function showSeriesView(name){
+  S.view='series';S.seriesFilter=name;
+  document.getElementById('home-view').style.display='none';
+  document.getElementById('results-view').style.display='none';
+  document.getElementById('series-view').style.display='';
+
+  const info=SERIES[name];
+  if(!info)return;
+
+  const hdr=document.getElementById('series-header');
+  hdr.innerHTML=`<div style="margin-bottom:16px">
+    <div style="font-size:20px;font-weight:700;margin-bottom:4px">${name}</div>
+    <div style="font-size:12px;color:var(--text2)">${info.prompts.length} Prompts · ${[...info.cats].join(', ')}</div>
+  </div>`;
+
+  const grid=document.getElementById('series-grid-detail');
+  grid.innerHTML=info.prompts.map(p=>cardHTML(p)).join('');
+}
+
+// === SERIES TILES ===
+function renderSeriesTiles(){
+  const grid=document.getElementById('series-grid');
+  const sorted=Object.entries(SERIES).sort((a,b)=>b[1].prompts.length-a[1].prompts.length);
+  grid.innerHTML=sorted.slice(0,40).map(([name,info])=>{
+    const cats=[...info.cats].slice(0,3);
+    const firstCluster=mc(info.prompts[0]);
+    const color=CC[firstCluster]||'#a882ff';
+    return `<div class="series-tile fi" onclick="showSeriesView('${name.replace(/'/g,"\\'")}')" tabindex="0" role="button">
+      <div class="st-name">${name}</div>
+      <div class="st-count">${info.prompts.length} Prompts</div>
+      <div class="st-cats">${cats.map(c=>`<span class="st-cat">${c}</span>`).join('')}</div>
+    </div>`;
+  }).join('');
+}
+
+// === RECENT USED ===
+function renderRecentUsed(){
+  const list=document.getElementById('recent-list');
+  const recent=recentUsed.slice(0,10).map(id=>DB.find(p=>p.id===id)).filter(Boolean);
+  if(!recent.length){
+    list.innerHTML='<div style="color:var(--text3);font-size:12px;padding:12px">Noch keine Prompts verwendet — klicke auf einen Prompt und markiere ihn als "Genutzt"</div>';
+    return;
   }
-  switch(S.sort){
-    case'rel':if(S.q)r.sort((a,b)=>(b._sc||0)-(a._sc||0));break;
-    case'id+':r.sort((a,b)=>a.id.localeCompare(b.id));break;
-    case'id-':r.sort((a,b)=>b.id.localeCompare(a.id));break;
-    case'az':r.sort((a,b)=>(a.title||'').localeCompare(b.title||''));break;
-    case'cat':r.sort((a,b)=>(a.category||'').localeCompare(b.category||''));break;
+  list.innerHTML=recent.map(p=>`<div class="recent-item fi" onclick="selectPrompt('${p.id}')">
+    <div class="ri-dot" style="background:${mcc(p)}"></div>
+    <div class="ri-info"><div class="ri-title">${p.title}</div><div class="ri-meta">${p.category_de||p.category||''}</div></div>
+  </div>`).join('');
+}
+
+// === FAVORITES ===
+function renderFavorites(){
+  const list=document.getElementById('fav-list');
+  const favList=DB.filter(p=>favs[p.id]);
+  if(!favList.length){
+    list.innerHTML='<div style="color:var(--text3);font-size:12px;padding:12px">Noch keine Favoriten — markiere Prompts mit ★ um sie hier zu sehen</div>';
+    return;
   }
-  render(r);
+  list.innerHTML=favList.slice(0,10).map(p=>`<div class="recent-item fi" onclick="selectPrompt('${p.id}')">
+    <div class="ri-dot" style="background:${mcc(p)}"></div>
+    <div class="ri-info"><div class="ri-title">${p.title}</div><div class="ri-meta">${p.category_de||p.category||''}</div></div>
+    <span style="color:var(--yellow);font-size:12px">★</span>
+  </div>`).join('');
 }
 
-// ============================================================
-// RENDER
-// ============================================================
-function cColor(p){if(!p.meta_cluster)return'#444';const c=p.meta_cluster[0];return c==='A'?'var(--cA)':c==='B'?'var(--cB)':c==='C'?'var(--cC)':'var(--cD)'}
-function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
-function hlPh(h){return h.replace(/\[([^\]]+)\]/g,'<span class="ph">[$1]</span>')}
-
-function render(r){
-  document.getElementById('res-cnt').textContent=r.length+' Ergebnisse';
-  document.getElementById('grid').innerHTML=r.slice(0,300).map(p=>
-    '<div class="card '+(S.sel===p.id?'on':'')+' '+(S.used.has(p.id)?'used':'')+' '+(S.fav.has(p.id)?'fav':'')+'" data-id="'+p.id+'" onclick="sel(\''+p.id+'\')">'+
-      '<div class="card-h"><div class="card-dot" style="background:'+cColor(p)+'"></div><span class="card-id">'+p.id+'</span><span class="card-t">'+esc(p.title||'')+'</span></div>'+
-      '<div class="card-p">'+esc(p.prompt_text||'')+'</div>'+
-      '<div class="card-m"><span class="tg cat">'+( p.category||'')+'</span><span class="tg acc">'+(p.account||'')+'</span>'+(p.series?'<span class="tg ser">'+esc(p.series)+'</span>':'')+'</div>'+
-    '</div>').join('');
+// === CARD HTML ===
+function cardHTML(p){
+  const color=mcc(p);
+  const u=usage[p.id]?'used':'';
+  const f=favs[p.id]?'fav':'';
+  const txt=(p.prompt_text||'').substring(0,120);
+  const cat=p.category_de||p.category||'';
+  const ser=p.series||'';
+  return `<div class="card ${u} ${f} fi" onclick="selectPrompt('${p.id}')" data-id="${p.id}" tabindex="0" role="button">
+    <div class="card-h"><div class="card-dot" style="background:${color}"></div><span class="card-id">${p.id}</span><span class="card-t">${p.title||'Unbenannt'}</span></div>
+    <div class="card-p">${txt}</div>
+    <div class="card-m">
+      <span class="tg cat">${cat}</span>
+      ${ser?`<span class="tg ser">${ser}</span>`:''}
+    </div>
+  </div>`;
 }
 
-// ============================================================
-// SELECT / DETAIL
-// ============================================================
-function sel(id){
+// === RENDER SEARCH RESULTS ===
+function render(){
+  let list=[...DB];
+
+  // Filter by cluster
+  if(S.cluster==='fav')list=list.filter(p=>favs[p.id]);
+  else if(S.cluster==='used')list=list.filter(p=>usage[p.id]);
+  else if(S.cluster!=='all')list=list.filter(p=>mc(p)===S.cluster);
+
+  // Filter by category
+  if(S.category)list=list.filter(p=>(p.category_de||p.category)===S.category);
+
+  // Search
+  if(S.query){
+    const q=S.query.toLowerCase();
+    list=list.map(p=>{
+      let score=0;
+      const t=(p.title||'').toLowerCase(),tx=(p.prompt_text||'').toLowerCase(),tg=(p.tags||[]).join(' ').toLowerCase(),cat=(p.category_de||'').toLowerCase(),ser=(p.series||'').toLowerCase();
+      if(t.includes(q))score+=10;
+      if(cat.includes(q))score+=5;
+      if(tg.includes(q))score+=4;
+      if(ser.includes(q))score+=3;
+      if(tx.includes(q))score+=2;
+      return{p,score};
+    }).filter(x=>x.score>0).sort((a,b)=>b.score-a.score).map(x=>x.p);
+  }
+
+  // Sort
+  const sort=document.getElementById('sort').value;
+  if(sort==='id+')list.sort((a,b)=>a.id.localeCompare(b.id));
+  else if(sort==='id-')list.sort((a,b)=>b.id.localeCompare(a.id));
+  else if(sort==='az')list.sort((a,b)=>(a.title||'').localeCompare(b.title||''));
+  else if(sort==='cat')list.sort((a,b)=>(a.category_de||'').localeCompare(b.category_de||''));
+
+  document.getElementById('res-cnt').textContent=`${list.length} Ergebnisse`;
+  document.getElementById('grid').innerHTML=list.slice(0,300).map(p=>cardHTML(p)).join('');
+}
+
+// === SELECT PROMPT ===
+function selectPrompt(id){
+  const p=DB.find(x=>x.id===id);if(!p)return;
   S.sel=id;
-  const p=prompts.find(x=>x.id===id);if(!p)return;
+
   document.getElementById('layout').classList.add('open');
-  const anat=parseAnat(p), master=genMaster(p), sim=findSim(p,5), chains=getChains(p), tok=estTok(p,master);
-  document.getElementById('det').innerHTML='<div class="det-c si">'+
-    '<div class="det-hdr">'+
-      '<div class="det-id">'+p.id+' · '+(p.file||'')+' · '+(p.lang||'EN')+'</div>'+
-      '<div class="det-t">'+esc(p.title||'')+'</div>'+
-      '<div class="det-mr"><span class="tg cat">'+p.category+' '+(p.category_de||'')+'</span><span class="tg acc">'+(p.account||'')+'</span>'+(p.series?'<span class="tg ser">'+esc(p.series)+'</span>':'')+'</div>'+
-      (p.tags?'<div class="det-mr">'+p.tags.split(',').map(t=>'<span class="tg">'+t.trim()+'</span>').join('')+'</div>':'')+
-      '<div class="det-acts">'+
-        '<button class="abtn '+(S.fav.has(id)?'af':'')+'" onclick="togFav(\''+id+'\')">'+(S.fav.has(id)?'★ Favorit':'☆ Favorit')+'</button>'+
-        '<button class="abtn '+(S.used.has(id)?'au':'')+'" onclick="togUsed(\''+id+'\')">'+(S.used.has(id)?'✓ Genutzt':'◯ Genutzt')+'</button>'+
-        '<button class="abtn" onclick="closeDet()">✕</button>'+
-      '</div>'+
-    '</div>'+
-    '<div class="sec"><div class="sec-t">📝 Original Prompt</div><div class="orig">'+hlPh(esc(p.prompt_text||''))+'</div></div>'+
-    '<div class="sec"><div class="sec-t">🧬 Prompt-Anatomie</div><div class="anat">'+anat.map(a=>'<div class="ai" data-t="'+a.t+'"><div class="ai-l">'+a.e+' '+a.l+'</div><div class="ai-t">'+esc(a.x)+'</div></div>').join('')+'</div></div>'+
-    '<div class="sec"><div class="sec-t">⚡ Enhanced Master Prompt</div><div class="master" id="mp">'+esc(master)+'<button class="cpbtn" onclick="copyM()">Copy</button></div></div>'+
-    '<div class="sec"><div class="sec-t">💰 Token-Schätzung</div><div class="tok-g"><div class="tok-c"><div class="tok-v">'+tok.i+'</div><div class="tok-l">Input</div></div><div class="tok-c"><div class="tok-v">~'+tok.o+'</div><div class="tok-l">Output (est.)</div></div><div class="tok-cost"><div class="cost-v">~$'+tok.c+'</div><div class="cost-l">Kosten (Claude Sonnet)</div></div></div></div>'+
-    '<div class="sec"><div class="sec-t">🔗 Ähnliche Prompts ('+sim.length+')</div>'+(sim.map(s=>'<div class="sim-i" onclick="sel(\''+s.id+'\')"><span class="sim-t">'+esc(s.title||'')+' <span style="color:var(--text3)">'+s.category+'</span></span><span class="sim-s">'+s._ss+'%</span></div>').join('')||'<div style="color:var(--text3);font-size:11px">Keine ähnlichen gefunden</div>')+'</div>'+
-    '<div class="sec"><div class="sec-t">⚙️ Workflow-Chains</div>'+chains.map(c=>'<div class="ch-i"><div class="ch-n">'+esc(c.n)+'</div><div class="ch-s">'+esc(c.s)+'</div></div>').join('')+'</div>'+
-  '</div>';
-  document.querySelectorAll('.card').forEach(c=>c.classList.toggle('on',c.dataset.id===id));
+  // Highlight card
+  document.querySelectorAll('.card').forEach(c=>{c.classList.toggle('on',c.dataset.id===id)});
+
+  const det=document.getElementById('det');
+  det.scrollTop=0;
+
+  const color=mcc(p);
+  const cat=p.category_de||p.category||'';
+  const ser=p.series||'';
+  const tags=(p.tags||[]);
+
+  // Anatomy
+  const anatomy=parseAnatomy(p.prompt_text||'');
+  const anatomyHTML=anatomy.length?anatomy.map(a=>`<div class="ai" data-t="${a.type}"><div class="ai-l">${a.label}</div><div class="ai-t">${a.text}</div></div>`).join(''):'<div style="color:var(--text3);font-size:11px">Keine Anatomie-Elemente erkannt</div>';
+
+  // Master prompt
+  const master=generateMaster(p,anatomy);
+
+  // Tokens
+  const txt=p.prompt_text||'';
+  const chars=txt.length;
+  const tokens=Math.ceil(chars/3.8);
+  const cost=(tokens*0.000003).toFixed(6);
+
+  // Similar
+  const similar=findSimilar(p).slice(0,5);
+  const simHTML=similar.map(s=>`<div class="sim-i" onclick="selectPrompt('${s.p.id}')"><span class="sim-t">${s.p.title||'Unbenannt'}</span><span class="sim-s">${Math.round(s.score*100)}%</span></div>`).join('');
+
+  // Chains
+  const chains=suggestChains(p);
+  const chainHTML=chains.map(c=>`<div class="ch-i"><div class="ch-n">${c.name}</div><div class="ch-s">${c.desc}</div></div>`).join('');
+
+  det.innerHTML=`<div class="det-c si">
+    <button class="close-btn" onclick="closeDetail()" aria-label="Detail schließen">✕</button>
+    <div class="det-hdr">
+      <div class="det-id">${p.id}</div>
+      <div class="det-t">${p.title||'Unbenannt'}</div>
+      <div class="det-mr">
+        <span class="tg cat">${cat}</span>
+        ${ser?`<span class="tg ser">${ser}</span>`:''}
+        ${tags.map(t=>`<span class="tg">${t}</span>`).join('')}
+      </div>
+      <div class="det-acts">
+        <button class="abtn af ${favs[p.id]?'on':''}" onclick="toggleFav('${p.id}')" aria-label="Favorit umschalten">★ ${favs[p.id]?'Favorit':'Favorisieren'}</button>
+        <button class="abtn au ${usage[p.id]?'on':''}" onclick="toggleUsed('${p.id}')" aria-label="Als genutzt markieren">✓ ${usage[p.id]?'Genutzt':'Als genutzt'}</button>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-t">📝 Original Prompt</div>
+      <div class="orig">${highlightPlaceholders(txt)}<button class="cpbtn" onclick="copyText(this,'${p.id}','orig')" aria-label="Kopieren">Kopieren</button></div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-t">🧬 Prompt-Anatomie</div>
+      <div class="anat">${anatomyHTML}</div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-t">🚀 Enhanced Master Prompt</div>
+      <div class="master">${master}<button class="cpbtn" onclick="copyText(this,'${p.id}','master')" aria-label="Kopieren">Kopieren</button></div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-t">📊 Token-Schätzung</div>
+      <div class="tok-g">
+        <div class="tok-c"><div class="tok-v">${chars.toLocaleString()}</div><div class="tok-l">Zeichen</div></div>
+        <div class="tok-c"><div class="tok-v">${tokens.toLocaleString()}</div><div class="tok-l">~Tokens</div></div>
+        <div class="tok-cost"><div class="cost-v">~$${cost}</div><div class="cost-l">Geschätzte Kosten (GPT-4 Input)</div></div>
+      </div>
+    </div>
+
+    ${simHTML?`<div class="sec"><div class="sec-t">🔗 Ähnliche Prompts</div>${simHTML}</div>`:''}
+    ${chainHTML?`<div class="sec"><div class="sec-t">⚡ Workflow-Chains</div>${chainHTML}</div>`:''}
+  </div>`;
 }
 
-function closeDet(){S.sel=null;document.getElementById('layout').classList.remove('open');document.querySelectorAll('.card').forEach(c=>c.classList.remove('on'))}
-
-// ============================================================
-// ANATOMY PARSER
-// ============================================================
-function parseAnat(p){
-  const t=p.prompt_text||'',a=[];
-  if(/^(act as|you are|imagine|pretend|as a|du bist|sei ein)/i.test(t)){
-    const m=t.match(/^([^.!]+[.!])/);
-    a.push({t:'role',e:'🎭',l:'Role',x:m?m[1]:t.substring(0,80)});
-  } else a.push({t:'role',e:'🎭',l:'Role',x:'⚠ Nicht definiert — füge eine Experten-Rolle hinzu'});
-  const s1=t.split(/[.!]\s+/);
-  a.push({t:'task',e:'📋',l:'Task',x:s1[0]||t.substring(0,100)});
-  const ph=t.match(/\[([^\]]+)\]/g);
-  a.push({t:'ctx',e:'📎',l:'Context',x:ph?'Variablen: '+ph.join(', '):"⚠ Keine Variablen — Prompt ist generisch"});
-  if(/(analyze|think|examine|consider|evaluate|compare|step by step|break down)/i.test(t)){
-    a.push({t:'reason',e:'🧠',l:'Reasoning',x:'Analytischer Denkprozess erkannt'});
-  } else a.push({t:'reason',e:'🧠',l:'Reasoning',x:"⚠ Kein Reasoning — empfohlen: \"Think step by step\" hinzufügen"});
-  if(/(no more than|maximum|limit|within \d|not exceed)/i.test(t)){
-    a.push({t:'stop',e:'🛑',l:'Stop Conditions',x:'Begrenzungen erkannt'});
-  } else a.push({t:'stop',e:'🛑',l:'Stop Conditions',x:'⚠ Keine Limits — definiere Länge/Umfang'});
-  if(/(list|table|json|format|structure|outline|steps|numbered|bullet)/i.test(t)){
-    a.push({t:'out',e:'📄',l:'Output Format',x:'Strukturiertes Format erkannt'});
-  } else a.push({t:'out',e:'📄',l:'Output Format',x:'⚠ Kein Format — definiere die gewünschte Struktur'});
-  return a;
+function closeDetail(){
+  document.getElementById('layout').classList.remove('open');
+  document.querySelectorAll('.card.on').forEach(c=>c.classList.remove('on'));
+  document.getElementById('det').innerHTML='<div class="det-empty">Wähle einen Prompt<br>um die Analyse zu sehen</div>';
+  S.sel=null;
 }
 
-// ============================================================
-// MASTER PROMPT GENERATOR
-// ============================================================
-function genMaster(p){
-  const t=p.prompt_text||'',ph=(t.match(/\[([^\]]+)\]/g)||[]).join(', '),cat=p.category||'';
-  const roles={'A':'Prompt Engineering Architect','B':'Strategic Reasoning Expert','C':'AI Automation Architect',
-    'D-01':'Senior Content Strategist','D-02':'Expert Educator','D-03':'Senior Software Engineer',
-    'D-04':'Business Strategy Consultant','D-05':'Career Coach','D-06':'Growth Marketing Expert',
-    'D-07':'Health & Wellness Professional','D-08':'Productivity Coach','D-09':'Creative Director',
-    'D-10':'Lifestyle Optimization Specialist','D-11':'Mindfulness & Self-Awareness Guide'};
-  const role=roles[cat]||roles[cat[0]]||'Domain Expert';
-  return '# '+(p.title||'Enhanced Prompt')+' — Master Version\n\n'+
-    '🎭 ROLE\nYou are a '+role+' with 15+ years of deep expertise. You communicate with clarity, depth, and actionable precision.\n\n'+
-    '📋 TASK\n'+t+'\n\n'+
-    '📎 CONTEXT\n'+(ph?'Variables: '+ph:'Adapt to the user\'s specific situation.')+'\nCategory: '+(p.category_de||p.category_en||cat)+'\n'+(p.series?'Series: '+p.series+'\n':'')+'\n'+
-    '🧠 REASONING\nBefore answering, think step by step:\n1. Analyze the user\'s specific situation and constraints\n2. Consider multiple approaches — select the optimal one\n3. Anticipate follow-up questions proactively\n4. Validate recommendations against real-world practicality\n\n'+
-    '🛑 STOP CONDITIONS\n- Max 800 words unless complexity requires more\n- No generic filler or disclaimers\n- Quality over quantity — stop when all key points are covered\n\n'+
-    '📄 OUTPUT FORMAT\n1. Executive Summary (2-3 sentences)\n2. Core Analysis/Recommendations (numbered, detailed)\n3. Quick-Win Actions (3 things to do right now)\n4. Advanced Tips (for going deeper)';
+// === ANATOMY PARSER ===
+function parseAnatomy(text){
+  if(!text||text.length<20)return[];
+  const parts=[];
+  const lines=text.split('\n');
+
+  // Role detection
+  const roleMatch=text.match(/(?:(?:du bist|you are|act as|sei|behave as|role:?|persona:?)\s+)(.*?)(?:\.|$)/i);
+  if(roleMatch)parts.push({type:'role',label:'Rolle / Persona',text:roleMatch[1].trim()});
+
+  // Task detection
+  const taskMatch=text.match(/(?:(?:deine aufgabe|your task|please|bitte|erstelle|create|write|generate|analysiere|analyze)\s+)(.*?)(?:\.|$)/i);
+  if(taskMatch)parts.push({type:'task',label:'Aufgabe',text:taskMatch[1].trim()});
+
+  // Context
+  const ctxMatch=text.match(/(?:(?:kontext|context|background|hintergrund|given that|basierend auf):?\s*)(.*?)(?:\.|$)/i);
+  if(ctxMatch)parts.push({type:'ctx',label:'Kontext',text:ctxMatch[1].trim()});
+
+  // Reasoning
+  const reasonMatch=text.match(/(?:(?:denke|think|reason|überlege|step.by.step|schritt.für.schritt|analyse|explain your))\s*(.*?)(?:\.|$)/i);
+  if(reasonMatch)parts.push({type:'reason',label:'Reasoning',text:reasonMatch[1].trim()});
+
+  // Output format
+  const outMatch=text.match(/(?:(?:format|ausgabe|output|formatiere|antwort|respond)\s*(?:als|as|in|:)\s*)(.*?)(?:\.|$)/i);
+  if(outMatch)parts.push({type:'out',label:'Output-Format',text:outMatch[1].trim()});
+
+  // Constraints / stop conditions
+  const stopMatch=text.match(/(?:(?:vermeide|avoid|don.t|nicht|never|niemals|maximal|maximum|limit|beschränke)\s+)(.*?)(?:\.|$)/i);
+  if(stopMatch)parts.push({type:'stop',label:'Einschränkungen',text:stopMatch[1].trim()});
+
+  // If nothing detected, create basic parts from text
+  if(!parts.length&&text.length>50){
+    const sentences=text.split(/[.!?]+/).filter(s=>s.trim().length>10);
+    if(sentences.length>=1)parts.push({type:'task',label:'Aufgabe',text:sentences[0].trim()});
+    if(sentences.length>=2)parts.push({type:'ctx',label:'Kontext',text:sentences.slice(1).join('. ').trim()});
+  }
+  return parts;
 }
 
-// ============================================================
-// SIMILARITY ENGINE
-// ============================================================
-function findSim(p,n){
-  const tags=new Set((p.tags||'').split(',').map(t=>t.trim().toLowerCase()));
-  return prompts.filter(x=>x.id!==p.id).map(x=>{
-    let sc=0;const xt=new Set((x.tags||'').split(',').map(t=>t.trim().toLowerCase()));
-    tags.forEach(t=>{if(xt.has(t))sc+=15});
-    if(x.category===p.category)sc+=20;
-    if(x.meta_cluster===p.meta_cluster)sc+=5;
-    if(p.series&&x.series&&x.series.replace(/\s*\d+\/\d+$/,'')=== p.series.replace(/\s*\d+\/\d+$/,''))sc+=30;
-    if(x.account===p.account)sc+=3;
-    const tw=new Set((p.title||'').toLowerCase().split(/\s+/));
-    (x.title||'').toLowerCase().split(/\s+/).forEach(w=>{if(tw.has(w)&&w.length>3)sc+=8});
-    return Object.assign({},x,{_ss:Math.min(sc,99)});
-  }).filter(x=>x._ss>10).sort((a,b)=>b._ss-a._ss).slice(0,n);
+// === MASTER PROMPT GENERATOR ===
+function generateMaster(p,anatomy){
+  const role=anatomy.find(a=>a.type==='role');
+  const task=anatomy.find(a=>a.type==='task');
+  const ctx=anatomy.find(a=>a.type==='ctx');
+  const out=anatomy.find(a=>a.type==='out');
+  const stop=anatomy.find(a=>a.type==='stop');
+
+  let master='';
+  master+=`# Enhanced: ${p.title||'Prompt'}\n\n`;
+  if(role)master+=`## Rolle\n${role.text}\n\n`;
+  else master+=`## Rolle\nDu bist ein erfahrener Experte für ${p.category_de||'dieses Thema'}.\n\n`;
+  if(task)master+=`## Aufgabe\n${task.text}\n\n`;
+  if(ctx)master+=`## Kontext\n${ctx.text}\n\n`;
+  master+=`## Vorgehen\n1. Analysiere die Anforderung sorgfältig\n2. Strukturiere deine Antwort logisch\n3. Liefere konkrete, umsetzbare Ergebnisse\n\n`;
+  if(out)master+=`## Output-Format\n${out.text}\n\n`;
+  else master+=`## Output-Format\nStrukturierte Antwort mit klaren Abschnitten und Beispielen.\n\n`;
+  if(stop)master+=`## Einschränkungen\n${stop.text}\n\n`;
+  return master;
 }
 
-// ============================================================
-// CHAINS
-// ============================================================
-function getChains(p){
-  const c=p.category||'',chains=[];
-  const tpl=[
-    {r:/^D-0[146]/,n:'📊 Research → Content → Distribution',s:'1. B-02 Recherche → 2. D-01 Content → 3. D-06 Marketing → 4. A-02 Optimierung'},
-    {r:/^D-11/,n:'🧘 Discovery → Reflection → Action',s:'1. D-11 Selbsterkenntnis → 2. D-08 Aktionsplan → 3. D-07 Wellness'},
-    {r:/^D-05/,n:'💼 Career Pipeline',s:'1. D-05 CV → 2. D-05 Interview → 3. D-04 Strategie → 4. D-06 Personal Brand'},
-    {r:/^D-04/,n:'🚀 Business Launch',s:'1. B-02 Marktanalyse → 2. D-04 Strategie → 3. D-06 Marketing → 4. D-01 Content'},
-    {r:/^A-/,n:'🧬 Prompt Engineering Flow',s:'1. A-01 Rolle → 2. A-02 Technik → 3. A-04 Output → 4. A-05 Meta-Optimierung'},
-    {r:/^D-07/,n:'💚 Health Routine',s:'1. D-07 Plan → 2. D-08 Tracking → 3. D-10 Lifestyle → 4. D-11 Mindfulness'},
-    {r:/^C-/,n:'🤖 Automation Setup',s:'1. C-01 Workflow → 2. C-03 Tools → 3. C-02 Agents → 4. A-05 System-Prompt'},
-    {r:/^D-10/,n:'✈️ Travel Optimizer',s:'1. D-10 Planung → 2. D-04 Budget → 3. D-08 Zeitmanagement'},
-    {r:/^D-09/,n:'🎨 Creative Pipeline',s:'1. B-02 Research → 2. D-09 Design → 3. D-01 Copy → 4. D-06 Distribution'},
-  ];
-  tpl.forEach(t=>{if(t.r.test(c))chains.push({n:t.n,s:t.s})});
-  if(!chains.length)chains.push({n:'🔄 Universal Enhancement',s:'1. Basis-Prompt → 2. A-02 Technik → 3. A-05 Meta-Prompt → 4. Iteration'});
-  return chains;
+// === SIMILARITY ENGINE ===
+function findSimilar(target){
+  const tTags=new Set((target.tags||[]).map(t=>t.toLowerCase()));
+  const tCat=(target.category_de||'').toLowerCase();
+  const tWords=new Set((target.title||'').toLowerCase().split(/\s+/).filter(w=>w.length>3));
+
+  return DB.filter(p=>p.id!==target.id).map(p=>{
+    let score=0;
+    const pTags=new Set((p.tags||[]).map(t=>t.toLowerCase()));
+    const pCat=(p.category_de||'').toLowerCase();
+    const pWords=new Set((p.title||'').toLowerCase().split(/\s+/).filter(w=>w.length>3));
+
+    // Same category
+    if(pCat===tCat)score+=0.3;
+    // Tag overlap
+    let tagOverlap=0;tTags.forEach(t=>{if(pTags.has(t))tagOverlap++});
+    score+=tagOverlap*0.15;
+    // Word overlap
+    let wordOverlap=0;tWords.forEach(w=>{if(pWords.has(w))wordOverlap++});
+    score+=wordOverlap*0.2;
+    // Same cluster
+    if(mc(p)===mc(target))score+=0.1;
+    // Same series
+    if(p.series&&target.series&&p.series===target.series)score+=0.25;
+
+    return{p,score:Math.min(score,1)};
+  }).filter(x=>x.score>0.2).sort((a,b)=>b.score-a.score);
 }
 
-// ============================================================
-// TOKEN ESTIMATOR
-// ============================================================
-function estTok(p,m){
-  const inp=Math.ceil((m||p.prompt_text||'').length/4);
-  const mul=p.category&&p.category[0]==='A'?2:p.category&&p.category[0]==='B'?3:2.5;
-  const out=Math.ceil(inp*mul);
-  const cost=((inp*3/1e6)+(out*15/1e6)).toFixed(4);
-  return{i:inp.toLocaleString(),o:out.toLocaleString(),c:cost};
-}
+// === CHAIN SUGGESTER ===
+function suggestChains(p){
+  const cat=p.category_de||'';
+  const chains=[];
 
-// ============================================================
-// USAGE
-// ============================================================
-function togFav(id){if(S.fav.has(id))S.fav.delete(id);else S.fav.add(id);updStats();sel(id);filter()}
-function togUsed(id){if(S.used.has(id))S.used.delete(id);else S.used.add(id);updStats();sel(id);filter()}
-function updStats(){document.getElementById('st-used').textContent=S.used.size;document.getElementById('st-fav').textContent=S.fav.size}
-
-function exportAll(){
-  const d={prompts:prompts,usage:{used:Array.from(S.used),favorites:Array.from(S.fav)},exported:new Date().toISOString()};
-  const b=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});
-  const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download='prompt-engine-export-'+new Date().toISOString().split('T')[0]+'.json';a.click();URL.revokeObjectURL(u);
-}
-
-function copyM(){
-  const t=document.getElementById('mp').innerText.replace('Copy','').trim();
-  navigator.clipboard.writeText(t).then(()=>{
-    const b=document.querySelector('.cpbtn');b.textContent='✓';b.classList.add('ok');
-    setTimeout(()=>{b.textContent='Copy';b.classList.remove('ok')},1500);
-  });
-}
-
-// ============================================================
-// AUTO-CATEGORIZATION ENGINE
-// ============================================================
-const CAT_KEYWORDS = {
-  'A-01': ['act as','you are','persona','role','pretend','imagine you'],
-  'A-02': ['prompt technique','few-shot','chain of thought','writing style','voice','tone','analyze my writing'],
-  'A-04': ['output format','json','markdown','table','structure'],
-  'A-05': ['meta-prompt','generate prompts','prompt generator','best prompts','guide to using'],
-  'B-01': ['mental model','reasoning','think step','decision','framework','logic'],
-  'B-02': ['research','analyze','compare','synthesize','investigate','evaluate'],
-  'C-01': ['workflow','automate','pipeline','sequence'],
-  'C-02': ['agent','autonomous','multi-step'],
-  'C-03': ['tool','integration','software','app','platform'],
-  'D-01': ['blog','article','content','copywriting','headline','writing','title','caption'],
-  'D-02': ['teach','learn','explain','curriculum','education','course','study','simplif'],
-  'D-03': ['code','programming','debug','algorithm','function','API','developer'],
-  'D-04': ['business','strategy','revenue','market','investor','startup','financial plan','profit','entrepreneur'],
-  'D-05': ['resume','career','interview','job','hire','cover letter','CV','salary'],
-  'D-06': ['marketing','sales','conversion','lead','SEO','social media','campaign','email','CTA','ad ','growth'],
-  'D-07': ['health','fitness','wellness','exercise','diet','sleep','medical','workout','nutrition'],
-  'D-08': ['productivity','habit','time management','focus','procrastination','goal','routine','schedule','ADHD'],
-  'D-09': ['design','visual','UI','UX','creative','graphic','logo','brand identity'],
-  'D-10': ['travel','flight','hotel','cooking','recipe','lifestyle','vacation','booking'],
-  'D-11': ['mindset','self-awareness','meditation','journal','shadow work','values','emotion','spiritual','belief','inner voice','psychology','self-sabotage'],
-};
-
-const CAT_NAMES = {
-  'A-01':'Rollen & Personas','A-02':'Prompt-Techniken','A-04':'Output-Formate','A-05':'Meta-Prompting',
-  'B-01':'Chain-of-Thought & Reasoning','B-02':'Analyse & Recherche',
-  'C-01':'Workflow-Design','C-02':'Multi-Agent','C-03':'Tool-Integrationen',
-  'D-01':'Content & Copywriting','D-02':'Bildung & Lernen','D-03':'Code & Development',
-  'D-04':'Business & Strategie','D-05':'Karriere & Bewerbung','D-06':'Marketing & Sales',
-  'D-07':'Gesundheit & Wellness','D-08':'Produktivität & Selbstmanagement',
-  'D-09':'Design & Visual','D-10':'Reise & Lifestyle','D-11':'Spiritualität & Selbsterkenntnis'
-};
-
-const CLUSTER_NAMES = {
-  'A':'A: Prompt-Architektur','B':'B: Reasoning & Planning','C':'C: Agentic & Automation','D':'D: Domain-Anwendungen'
-};
-
-function autoCateg(text){
-  const lower = text.toLowerCase();
-  let best = null, bestScore = 0;
-  Object.entries(CAT_KEYWORDS).forEach(([cat, keywords]) => {
-    let score = 0;
-    keywords.forEach(kw => {
-      if (lower.includes(kw)) score += kw.split(' ').length;
-    });
-    if (score > bestScore) { bestScore = score; best = cat; }
-  });
-  if (!best) best = 'D-01';
-  return {
-    category: best,
-    category_de: CAT_NAMES[best] || best,
-    meta_cluster: CLUSTER_NAMES[best[0]] || 'D: Domain-Anwendungen',
-    confidence: Math.min(Math.round(bestScore / 3 * 100), 99)
+  const chainMap={
+    'Content & Copywriting':[{name:'Content Pipeline',desc:'Recherche → Outline → Draft → Edit → Publish'},{name:'Copy Optimization',desc:'Headline → Body → CTA → A/B Test'}],
+    'Content & Social Media':[{name:'Social Media Flow',desc:'Content Idee → Caption → Hashtags → Schedule'},{name:'Viral Content Chain',desc:'Hook → Story → CTA → Engagement'}],
+    'Marketing & Sales':[{name:'Sales Funnel',desc:'Lead Magnet → Nurture → Offer → Close'},{name:'Campaign Builder',desc:'Audience → Message → Channel → Measure'}],
+    'Business & Strategie':[{name:'Strategy Pipeline',desc:'Analyse → Hypothese → Plan → Execute → Review'},{name:'Decision Framework',desc:'Data → Optionen → Bewertung → Entscheidung'}],
+    'Design & Visual':[{name:'Design Sprint',desc:'Research → Ideate → Prototype → Test → Iterate'}],
+    'Prompt-Techniken':[{name:'Prompt Optimization',desc:'Draft → Anatomy → Enhance → Test → Refine'}],
+    'Reasoning & Analyse':[{name:'Deep Analysis',desc:'Frage → Perspektiven → Evidence → Synthese → Conclusion'}],
+    'Bildung & Lernen':[{name:'Learning Path',desc:'Assessment → Curriculum → Practice → Test → Master'}],
   };
+
+  return chainMap[cat]||[{name:'Universal Chain',desc:'Input → Analyse → Generate → Review → Optimize'}];
 }
 
-function autoTitle(text){
-  const m = text.match(/^(create|build|design|write|generate|find|show|explain|analyze|teach|make|help|give|list|transform|train|search|act as|you are)\s+(.{5,40}?)[\s,.!]/i);
-  if (m) return m[0].trim().replace(/[.!,]$/,'');
-  return text.substring(0, 40).replace(/[.!,]$/,'').trim();
+// === HELPERS ===
+function highlightPlaceholders(text){
+  return text.replace(/\[([^\]]+)\]/g,'<span class="ph">[$1]</span>');
 }
 
-function autoTags(text, category){
-  const lower = text.toLowerCase();
-  const allTags = new Set();
-  (CAT_KEYWORDS[category] || []).forEach(kw => {
-    if (lower.includes(kw)) allTags.add(kw.replace(/\s+/g,'-'));
+function copyText(btn,id,type){
+  const p=DB.find(x=>x.id===id);if(!p)return;
+  let text=type==='orig'?(p.prompt_text||''):generateMaster(p,parseAnatomy(p.prompt_text||''));
+  navigator.clipboard.writeText(text).then(()=>{
+    btn.textContent='Kopiert!';btn.classList.add('ok');
+    setTimeout(()=>{btn.textContent='Kopieren';btn.classList.remove('ok')},1500);
   });
-  (text.match(/\[([^\]]+)\]/g) || []).forEach(ph => {
-    allTags.add(ph.replace(/[\[\]]/g,'').toLowerCase().replace(/\s+/g,'-'));
-  });
-  return Array.from(allTags).slice(0, 8).join(',');
 }
 
-// ============================================================
-// ADD PROMPT MODAL
-// ============================================================
-function openAddModal(){document.getElementById('modal').classList.add('show');document.getElementById('m-text').focus();
- document.getElementById('m-text').addEventListener('input', debounce(autoPreview, 500));
+function toggleFav(id){
+  favs[id]=!favs[id];if(!favs[id])delete favs[id];
+  localStorage.setItem('pie-favs',JSON.stringify(favs));
+  updateStats();
+  if(S.sel===id)selectPrompt(id);
+  if(S.view==='home')renderFavorites();
 }
+
+function toggleUsed(id){
+  usage[id]=!usage[id];if(!usage[id])delete usage[id];
+  localStorage.setItem('pie-usage',JSON.stringify(usage));
+  // Track recent
+  if(usage[id]){
+    recentUsed=recentUsed.filter(x=>x!==id);
+    recentUsed.unshift(id);
+    recentUsed=recentUsed.slice(0,50);
+    localStorage.setItem('pie-recent',JSON.stringify(recentUsed));
+  }
+  updateStats();
+  if(S.sel===id)selectPrompt(id);
+  if(S.view==='home')renderRecentUsed();
+}
+
+function updateStats(){
+  document.getElementById('st-total').textContent=DB.length;
+  document.getElementById('st-used').textContent=Object.keys(usage).length;
+  document.getElementById('st-fav').textContent=Object.keys(favs).length;
+}
+
+// === FILTER ===
+function filterCat(cat){
+  S.category=S.category===cat?'':cat;
+  document.querySelectorAll('.fitem[data-cat]').forEach(f=>{f.classList.toggle('on',f.dataset.cat===S.category)});
+  showResults();
+}
+
+function toggleSidebar(){
+  document.getElementById('layout').classList.toggle('sidebar-open');
+}
+
+// === MODAL ===
+function openAddModal(){document.getElementById('modal').classList.add('show')}
 function closeModal(){document.getElementById('modal').classList.remove('show')}
 
-function autoPreview(){
-  const text = document.getElementById('m-text').value;
-  if (text.length < 20) { document.getElementById('auto-cat').style.display='none'; return; }
-  const cat = autoCateg(text);
-  const title = autoTitle(text);
-  const tags = autoTags(text, cat.category);
-  document.getElementById('auto-cat').style.display='block';
-  document.getElementById('auto-cat-val').innerHTML =
-    '<b>Kategorie:</b> '+cat.category+' '+cat.category_de+' ('+cat.confidence+'% Confidence)<br>'+
-    '<b>Cluster:</b> '+cat.meta_cluster+'<br>'+
-    '<b>Titel-Vorschlag:</b> '+esc(title)+'<br>'+
-    '<b>Auto-Tags:</b> '+tags;
-  if (!document.getElementById('m-title').value) document.getElementById('m-title').placeholder = title;
-  if (!document.getElementById('m-tags').value) document.getElementById('m-tags').placeholder = tags;
-}
-
 function saveNewPrompt(){
-  const text = document.getElementById('m-text').value.trim();
-  if (!text) return alert('Prompt-Text ist leer!');
-  const cat = autoCateg(text);
-  const nextId = 'PL-' + String(prompts.length + 1).padStart(4,'0');
-  const newPrompt = {
-    id: nextId, file: 'manual-add',
-    account: document.getElementById('m-account').value.trim() || 'manual',
-    platform: 'Manual',
-    title: document.getElementById('m-title').value.trim() || autoTitle(text),
-    prompt_text: text, category: cat.category, category_de: cat.category_de,
-    category_en: CAT_NAMES[cat.category] || cat.category,
-    meta_cluster: cat.meta_cluster,
-    tags: document.getElementById('m-tags').value.trim() || autoTags(text, cat.category),
-    lang: /[äöüß]/i.test(text) ? 'DE' : 'EN',
-    series: document.getElementById('m-series').value.trim() || null
-  };
-  prompts.push(newPrompt);
-  document.getElementById('st-total').textContent = prompts.length;
-  buildSidebar();
+  const text=document.getElementById('m-text').value.trim();
+  if(!text){alert('Bitte Prompt-Text eingeben');return}
+  const title=document.getElementById('m-title').value.trim()||text.substring(0,40)+'...';
+  const tags=document.getElementById('m-tags').value.split(',').map(t=>t.trim()).filter(Boolean);
+  const series=document.getElementById('m-series').value.trim();
+
+  // Auto categorize
+  const cat=autoCategory(text);
+
+  const newId='PL-'+String(DB.length+1).padStart(4,'0');
+  const newP={id:newId,file:'user-added',account:'',platform:'ChatGPT',title,prompt_text:text,category:cat.cat,category_de:cat.cat,category_en:cat.cat,meta_cluster:cat.mc,tags,lang:cat.lang,series};
+  DB.push(newP);
+  buildSeries();buildSidebar();
   closeModal();
-  filter();
-  sel(nextId);
-  ['m-text','m-title','m-account','m-tags','m-series'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('auto-cat').style.display = 'none';
+  selectPrompt(newId);
+  showResults();
+  // Clear form
+  document.getElementById('m-text').value='';document.getElementById('m-title').value='';
+  document.getElementById('m-tags').value='';document.getElementById('m-series').value='';
 }
 
-function debounce(fn, ms){let t;return function(){const a=arguments;clearTimeout(t);t=setTimeout(()=>fn.apply(this,a),ms)}}
+// Auto-categorization keywords
+const CAT_KW={
+  'Content & Copywriting':['copy','headline','writing','hook','caption','blog','article','schreib','text','story','content','email','newsletter','subject line'],
+  'Content & Social Media':['instagram','tiktok','social media','post','reel','linkedin','twitter','thread','viral','hashtag'],
+  'Marketing & Sales':['marketing','sales','lead','funnel','campaign','conversion','ads','advertising','launch','customer','outreach'],
+  'Business & Strategie':['business','strateg','entrepreneur','startup','ceo','revenue','model','plan','growth','company','niche'],
+  'Business & Finanzen':['finance','invest','money','budget','income','profit','tax','steuer','kredit','savings','debt'],
+  'Produktivität & Karriere':['productiv','karriere','career','resume','cv','job','interview','time management','habit','routine','workflow'],
+  'Persönliche Entwicklung':['personal','mindset','goal','confidence','belief','growth','transform','identity','motivation'],
+  'Bildung & Lernen':['learn','study','teach','education','course','skill','tutorial','understand','explain','mentor'],
+  'Design & Visual':['design','visual','ui','ux','logo','brand','canva','figma','layout','color','image','graphic','presentation','slide'],
+  'Spiritualität & Mindset':['spirit','meditation','chakra','astro','tarot','soul','energy','manifest','intuition','consciousness','self-discovery'],
+  'Gesundheit & Wellness':['health','fitness','wellness','diet','exercise','sleep','mental health','therapy','stress','body'],
+  'Reise & Lifestyle':['travel','flight','hotel','reise','trip','vacation','adventure','destination','lifestyle','hack'],
+  'Code & Development':['code','programming','developer','api','python','javascript','html','css','debug','software'],
+  'Daten & Analyse':['data','analysis','spreadsheet','excel','sql','dashboard','metric','chart','research','statistik'],
+  'Prompt-Techniken':['prompt','template','framework','instruction','system prompt','few-shot','chain-of','technique'],
+  'Meta-Prompting':['meta','self-improv','optimize prompt','prompt engineer','iteration','recursive','mega-prompt'],
+  'Rollen & Personas':['persona','character','role-play','expert','advisor','consultant','simulate','pretend','act as'],
+  'Reasoning & Analyse':['reason','analyz','think','logic','argument','perspective','evaluate','compare','debate','critical'],
+  'Planung & Strategie':['plan','roadmap','timeline','milestone','decompos','break down','strategy','priorit','decision'],
+  'AI Tools & Workflows':['tool','automat','workflow','agent','plugin','integration','pipeline','gpt','claude','ai tool']
+};
+
+function autoCategory(text){
+  const t=text.toLowerCase();
+  let best='Content & Copywriting',bestScore=0;
+  for(const[cat,kws]of Object.entries(CAT_KW)){
+    let score=0;
+    kws.forEach(kw=>{if(t.includes(kw))score++});
+    if(score>bestScore){bestScore=score;best=cat}
+  }
+  // Detect language
+  const deWords=['und','der','die','das','ist','für','mit','ein','eine','nicht','ich','du','bitte','erstelle'];
+  let deScore=0;deWords.forEach(w=>{if(t.includes(w))deScore++});
+  const lang=deScore>=2?'de':'en';
+  // Meta cluster
+  const mcMap={'Prompt-Techniken':'A','Meta-Prompting':'A','Rollen & Personas':'A','Reasoning & Analyse':'B','Planung & Strategie':'B','AI Tools & Workflows':'C'};
+  const mcLetter=mcMap[best]||'D';
+  const mcFull={'A':'A: Prompt-Architektur','B':'B: Reasoning & Planning','C':'C: Agentic & Automation','D':'D: Domain-Anwendungen'};
+  return{cat:best,mc:mcFull[mcLetter],lang};
+}
+
+// === EXPORT ===
+function exportAll(){
+  const data={prompts:DB,meta:{version:'3.0',total:DB.length,exported:new Date().toISOString()},usage,favs,recentUsed};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download='prompt-intelligence-engine-export.json';a.click();
+  URL.revokeObjectURL(url);
+}
+
+// === EVENT LISTENERS ===
+document.getElementById('search').addEventListener('input',e=>{
+  S.query=e.target.value.trim();
+  if(S.query)showResults();
+  else showHome();
+});
+
+document.querySelectorAll('.tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+    tab.classList.add('on');
+    S.cluster=tab.dataset.c;
+    S.category='';
+    document.querySelectorAll('.fitem.on').forEach(f=>f.classList.remove('on'));
+    showResults();
+  });
+});
+
+document.getElementById('sort').addEventListener('change',()=>{if(S.view==='results')render()});
+
+// Keyboard shortcuts
+document.addEventListener('keydown',e=>{
+  if(e.key==='/'&&document.activeElement.tagName!=='INPUT'&&document.activeElement.tagName!=='TEXTAREA'){
+    e.preventDefault();document.getElementById('search').focus();
+  }
+  if(e.key==='Escape'){
+    if(document.getElementById('modal').classList.contains('show'))closeModal();
+    else if(S.sel)closeDetail();
+    else if(document.activeElement===document.getElementById('search')){document.getElementById('search').blur();showHome()}
+  }
+});
+
+// Logo click = home
+document.querySelector('.logo').addEventListener('keydown',e=>{if(e.key==='Enter')showHome()});
+
+// === WORKFLOW CHAINS (curated) ===
+const WORKFLOWS = [
+  {name:"Product Launch",desc:"Von Idee bis Go-Live — der komplette Launch-Workflow",steps:[
+    {label:"Marktforschung",kw:["market","audience","niche","competitor","research","analyse"]},
+    {label:"Produkt-Konzept",kw:["product","idea","validator","concept","blueprint","business"]},
+    {label:"Brand Identity",kw:["brand","identity","positioning","value","name","define"]},
+    {label:"Sales Copy",kw:["sales","copy","headline","conversion","offer","landing"]},
+    {label:"Launch Marketing",kw:["launch","email","campaign","announcement","funnel","marketing"]}
+  ]},
+  {name:"Content Creation",desc:"Von Zielgruppe bis Published — Content der konvertiert",steps:[
+    {label:"Zielgruppe",kw:["audience","persona","target","pain point","deep dive"]},
+    {label:"Strategie & Plan",kw:["content strategy","calendar","plan","pillar","editorial"]},
+    {label:"Hook & Headline",kw:["hook","headline","scroll","attention","viral"]},
+    {label:"Schreiben",kw:["write","draft","blog","article","creator","content"]},
+    {label:"Optimierung",kw:["optimize","seo","keyword","rewrite","repurpos"]}
+  ]},
+  {name:"Personal Branding",desc:"Finde deine Stimme und baue deine Marke auf",steps:[
+    {label:"Selbsterkenntnis",kw:["self","identity","strengths","values","personality","belief"]},
+    {label:"Brand Identität",kw:["personal brand","identity","unique","positioning","define"]},
+    {label:"Content Authority",kw:["authority","thought leader","strategy","expertise"]},
+    {label:"Social Presence",kw:["linkedin","instagram","social","profile","bio"]},
+    {label:"Wachstum",kw:["community","engagement","network","audience","growth"]}
+  ]},
+  {name:"Freelance Money",desc:"Skills monetarisieren — vom Skill zum Cashflow",steps:[
+    {label:"Skill Audit",kw:["skill","cash","offer","service","freelance"]},
+    {label:"Portfolio",kw:["portfolio","showcase","case study","testimonial","project"]},
+    {label:"Pricing",kw:["pricing","proposal","offer","package","rate","architect"]},
+    {label:"Client Gewinnung",kw:["client","lead","outreach","pitch","acquisition"]},
+    {label:"Skalieren",kw:["automate","scale","system","passive","template"]}
+  ]},
+  {name:"Presentation Pro",desc:"Vom leeren Slide zur Standing Ovation",steps:[
+    {label:"Struktur",kw:["outline","structure","presentation","talk","keynote"]},
+    {label:"Slide Design",kw:["slide","visual","design","layout","deck"]},
+    {label:"Storytelling",kw:["story","narrative","opening","hook","engage"]},
+    {label:"Call-to-Action",kw:["call to action","closing","cta","next step","finish"]}
+  ]},
+  {name:"AI Prompt Mastery",desc:"Vom Anfänger zum Prompt Engineering Pro",steps:[
+    {label:"Basics",kw:["beginner","basic","learn","chatgpt","prompt","guide","mastery"]},
+    {label:"Techniken",kw:["technique","framework","template","method","few-shot"]},
+    {label:"Personas",kw:["persona","role","expert","act as","simulate","mentor"]},
+    {label:"Workflows",kw:["workflow","chain","automation","pipeline","agent"]},
+    {label:"Meta-Level",kw:["meta","optimize","improve","iteration","master","enhance"]}
+  ]}
+];
+
+function isCleanPrompt(p){
+  const t=p.title||'';
+  if(t.length<5)return false;
+  let alpha=0;for(const c of t)if(/[a-zA-ZäöüÄÖÜß]/.test(c))alpha++;
+  if(alpha/Math.max(t.length,1)<0.5)return false;
+  if(/(?:20:\d|15:\d|08:\d|17:\d|01:\d|5\) \)|Gespeichert|Deine Story|Untitled|< )/.test(t))return false;
+  return true;
+}
+
+function findForStep(kws,limit=3){
+  const clean=DB.filter(isCleanPrompt);
+  return clean.map(p=>{
+    let score=0;
+    const text=((p.title||'')+' '+(p.prompt_text||'').substring(0,300)+' '+(p.tags||[]).join(' ')).toLowerCase();
+    kws.forEach(kw=>{if(text.includes(kw.toLowerCase()))score++});
+    return{p,score};
+  }).filter(x=>x.score>0).sort((a,b)=>b.score-a.score).slice(0,limit).map(x=>x.p);
+}
+
+function renderWorkflows(){
+  const grid=document.getElementById('wf-grid');
+  grid.innerHTML=WORKFLOWS.map((wf,i)=>{
+    const stepsHTML=wf.steps.map((s,j)=>{
+      const arrow=j<wf.steps.length-1?'<span class="wf-arrow">→</span>':'';
+      return `<span class="wf-step">${s.label}</span>${arrow}`;
+    }).join('');
+    return `<div class="wf-card fi" onclick="expandWorkflow(${i})" tabindex="0" role="button">
+      <div class="wf-name">${wf.name}</div>
+      <div class="wf-desc">${wf.desc}</div>
+      <div class="wf-steps">${stepsHTML}</div>
+    </div>`;
+  }).join('');
+}
+
+function expandWorkflow(idx){
+  const wf=WORKFLOWS[idx];
+  const container=document.getElementById('wf-detail-container');
+  container.style.display='block';
+  container.scrollIntoView({behavior:'smooth'});
+
+  let stepsHTML='';
+  wf.steps.forEach((step,i)=>{
+    const prompts=findForStep(step.kw,3);
+    const promptsHTML=prompts.map(p=>`<div class="wf-tl-prompt" onclick="selectPrompt('${p.id}')"><span class="wf-p-id">${p.id}</span> ${p.title||'Unbenannt'}</div>`).join('');
+    stepsHTML+=`<div class="wf-tl-step">
+      <div class="wf-tl-label">Schritt ${i+1}: ${step.label}</div>
+      <div class="wf-tl-prompts">${promptsHTML||'<div style="font-size:10px;color:var(--text3)">Keine passenden Prompts gefunden</div>'}</div>
+    </div>`;
+  });
+
+  container.innerHTML=`<div class="wf-detail fi">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">
+      <div>
+        <div class="wf-detail-title">🔗 ${wf.name}</div>
+        <div class="wf-detail-desc">${wf.desc}</div>
+      </div>
+      <button class="back-btn" onclick="document.getElementById('wf-detail-container').style.display='none'" style="margin:0">✕ Schließen</button>
+    </div>
+    <div class="wf-timeline">${stepsHTML}</div>
+  </div>`;
+}
+
+// === INIT ===
+init();
 </script>
 </body>
 </html>
