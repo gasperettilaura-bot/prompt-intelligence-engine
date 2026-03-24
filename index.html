@@ -555,6 +555,7 @@ async function init(){
     buildSeries();
     buildSidebar();
     updateStats();
+    initCmdPalette();
     showHome();
     document.getElementById('loader').style.display='none';
   }catch(e){
@@ -565,7 +566,7 @@ async function init(){
     inp.onchange=async(ev)=>{
       const f=ev.target.files[0];if(!f)return;
       const t=await f.text();const d=JSON.parse(t);
-      DB=d.prompts||[];buildSeries();buildSidebar();updateStats();showHome();
+      DB=d.prompts||[];buildSeries();buildSidebar();updateStats();initCmdPalette();showHome();
       document.getElementById('loader').style.display='none';
     };
     document.getElementById('loader').appendChild(inp);
@@ -1445,15 +1446,21 @@ function renderCmdResults(q){
   if(!h)h='<div style="padding:20px;text-align:center;color:var(--text3);font-size:13px">Keine Ergebnisse für "'+q+'"</div>';
   box.innerHTML=h;
 }
-document.getElementById('cmd-search').addEventListener('input',e=>renderCmdResults(e.target.value.trim()));
-document.getElementById('cmdOverlay').addEventListener('click',e=>{if(e.target===e.currentTarget)closeCmdPalette()});
-document.getElementById('cmd-search').addEventListener('keydown',e=>{
-  if(e.key==='Escape')closeCmdPalette();
-  const items=document.querySelectorAll('#cmd-results .cmd-item');
-  if(e.key==='ArrowDown'){e.preventDefault();cmdIdx=Math.min(cmdIdx+1,items.length-1);items.forEach((it,i)=>it.classList.toggle('active',i===cmdIdx))}
-  if(e.key==='ArrowUp'){e.preventDefault();cmdIdx=Math.max(cmdIdx-1,0);items.forEach((it,i)=>it.classList.toggle('active',i===cmdIdx))}
-  if(e.key==='Enter'&&cmdIdx>=0&&items[cmdIdx]){items[cmdIdx].click()}
-});
+// CMD palette listeners — deferred until DOM is ready
+function initCmdPalette(){
+  const cmdSearch=document.getElementById('cmd-search');
+  const cmdOverlay=document.getElementById('cmdOverlay');
+  if(!cmdSearch||!cmdOverlay)return;
+  cmdSearch.addEventListener('input',e=>renderCmdResults(e.target.value.trim()));
+  cmdOverlay.addEventListener('click',e=>{if(e.target===e.currentTarget)closeCmdPalette()});
+  cmdSearch.addEventListener('keydown',e=>{
+    if(e.key==='Escape')closeCmdPalette();
+    const items=document.querySelectorAll('#cmd-results .cmd-item');
+    if(e.key==='ArrowDown'){e.preventDefault();cmdIdx=Math.min(cmdIdx+1,items.length-1);items.forEach((it,i)=>it.classList.toggle('active',i===cmdIdx))}
+    if(e.key==='ArrowUp'){e.preventDefault();cmdIdx=Math.max(cmdIdx-1,0);items.forEach((it,i)=>it.classList.toggle('active',i===cmdIdx))}
+    if(e.key==='Enter'&&cmdIdx>=0&&items[cmdIdx]){items[cmdIdx].click()}
+  });
+}
 
 // === HERO STATS RENDERER ===
 function renderHeroStats(){
