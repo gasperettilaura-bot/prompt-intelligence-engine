@@ -18,7 +18,7 @@
   --border2: rgba(255,255,255,0.10);
   --text: #e8e4f0;
   --text2: #9590a8;
-  --text3: #7a7494;
+  --text3: #8e88a8;
   --accent: #a882ff;
   --accent2: #c4a8ff;
   --accentG: rgba(168,130,255,0.12);
@@ -390,9 +390,42 @@ input:focus-visible{outline:2px solid var(--accent);outline-offset:0px}
 .det-id{font-size:11px}
 .sec-t{font-size:11px}
 .card-id{font-size:10px}
+/* COLLECTIONS */
+.coll-modal{position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(5px);z-index:550;display:none;align-items:center;justify-content:center}
+.coll-modal.show{display:flex}
+.coll-box{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--r2);padding:20px;width:420px;max-height:70vh;overflow-y:auto}
+.coll-box h3{font-size:16px;font-weight:700;margin-bottom:12px;color:var(--text)}
+.coll-item{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--glass);border:1px solid var(--border);border-radius:8px;margin-bottom:6px;cursor:pointer;transition:var(--t)}
+.coll-item:hover{background:var(--glass2);border-color:var(--border2)}
+.coll-item .ci-name{font-size:13px;font-weight:500}
+.coll-item .ci-count{font-size:11px;color:var(--text3)}
+.coll-item.active{border-color:var(--green);background:rgba(110,231,160,0.06)}
+.coll-new{display:flex;gap:8px;margin-top:12px}
+.coll-new input{flex:1;padding:8px 12px;background:var(--glass);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:13px;font-family:inherit;outline:none}
+.coll-new input:focus{border-color:var(--green)}
+.coll-new button{padding:8px 14px;background:rgba(110,231,160,0.08);border:1px solid rgba(110,231,160,0.2);border-radius:8px;color:var(--green);font-size:12px;cursor:pointer;font-family:inherit;transition:var(--t);white-space:nowrap}
+.coll-new button:hover{background:rgba(110,231,160,0.15)}
+/* Collections sidebar section */
+.coll-sidebar{margin-top:12px}
+.coll-sidebar .coll-s-item{display:flex;align-items:center;justify-content:space-between;padding:5px 8px;border-radius:6px;font-size:11px;color:var(--green);cursor:pointer;transition:var(--t)}
+.coll-sidebar .coll-s-item:hover{background:rgba(110,231,160,0.06)}
+.coll-sidebar .coll-s-count{font-size:9px;color:var(--text3);background:rgba(110,231,160,0.06);padding:1px 5px;border-radius:8px}
+
+/* TAG CLOUD - COMPACT */
+.tag-cloud{max-height:120px;overflow:hidden;position:relative;transition:max-height 0.3s ease}
+.tag-cloud.expanded{max-height:none}
+.tc-toggle{display:block;text-align:center;padding:8px;color:var(--text3);font-size:11px;cursor:pointer;transition:var(--t);border:none;background:transparent;font-family:inherit;width:100%}
+.tc-toggle:hover{color:var(--text2)}
+
+/* SHARE TOAST */
+.share-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);padding:10px 20px;background:var(--bg2);border:1px solid var(--green);border-radius:12px;color:var(--green);font-size:13px;opacity:0;transition:all 0.3s ease;z-index:700;pointer-events:none}
+.share-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.skip-link:focus{top:0}
 </style>
 </head>
 <body>
+<a href="#main-content" class="skip-link" style="position:absolute;top:-40px;left:0;background:var(--accent);color:#fff;padding:8px 16px;z-index:9999;font-size:14px;border-radius:0 0 8px 0;transition:top 0.2s">Zum Hauptinhalt springen</a>
 
 <!-- LOADER -->
 <div id="loader">
@@ -480,8 +513,8 @@ input:focus-visible{outline:2px solid var(--accent);outline-offset:0px}
     </div>
     <!-- SEARCH RESULTS VIEW -->
     <div id="results-view" style="display:none;padding:12px">
-      <div class="res-hdr">
-        <div class="res-cnt" id="res-cnt">0 Ergebnisse</div>
+      <div class="res-hdr" style="padding-top:8px">
+        <div class="res-cnt" id="res-cnt" aria-live="polite" role="status">0 Ergebnisse</div>
         <div class="res-sort">
           <select id="sort" aria-label="Sortierung">
             <option value="rel">Relevanz</option>
@@ -609,6 +642,15 @@ function buildSidebar(){
   Object.entries(SERIES).sort((a,b)=>b[1].prompts.length-a[1].prompts.length).slice(0,15).forEach(([name,info])=>{
     h+=`<div class="fitem" onclick="showSeriesView('${name.replace(/'/g,"\\'")}')" tabindex="0" role="button"><span>${name}</span><span class="fcount">${info.prompts.length}</span></div>`;
   });
+  // Collections
+  const collNames=Object.keys(collections);
+  if(collNames.length){
+    h+='<div class="ftitle" style="margin-top:16px;color:var(--green)">📂 Collections</div>';
+    collNames.forEach(name=>{
+      const count=(collections[name]||[]).length;
+      h+=`<div class="fitem" onclick="showCollection('${name.replace(/'/g,"\'")}')" tabindex="0" role="button" style="color:var(--green)"><span>📂 ${name}</span><span class="fcount" style="color:var(--green);background:rgba(110,231,160,0.06)">${count}</span></div>`;
+    });
+  }
   sb.innerHTML=h;
 }
 
@@ -811,6 +853,12 @@ function selectPrompt(id){
       <div class="det-acts">
         <button class="abtn af ${favs[p.id]?'on':''}" onclick="toggleFav('${p.id}')" aria-label="Favorit umschalten">★ ${favs[p.id]?'Favorit':'Favorisieren'}</button>
         <button class="abtn au ${usage[p.id]?'on':''}" onclick="toggleUsed('${p.id}')" aria-label="Als genutzt markieren">✓ ${usage[p.id]?'Genutzt':'Als genutzt'}</button>
+      </div>
+      <div class="det-acts" style="margin-top:8px">
+        <button class="abtn" onclick="sharePrompt('${p.id}','whatsapp')" aria-label="Per WhatsApp teilen">📱 WhatsApp</button>
+        <button class="abtn" onclick="sharePrompt('${p.id}','copy')" aria-label="Share-Link kopieren">🔗 Link</button>
+        <button class="abtn" onclick="sharePrompt('${p.id}','email')" aria-label="Per Email teilen">✉️ Email</button>
+        <button class="abtn" onclick="addToCollection('${p.id}')" aria-label="Zu Collection hinzufügen" style="border-color:rgba(110,231,160,0.25);color:var(--green)">📂 Collection</button>
       </div>
     </div>
 
@@ -1124,6 +1172,7 @@ document.addEventListener('keydown',e=>{
   }
   if(e.key==='Escape'){
     if(document.getElementById('cmdOverlay').classList.contains('show'))closeCmdPalette();
+    else if(document.getElementById('collModal').classList.contains('show'))closeCollModal();
     else if(document.getElementById('modal').classList.contains('show'))closeModal();
     else if(S.sel)closeDetail();
     else if(document.activeElement===document.getElementById('search')){document.getElementById('search').blur();showHome()}
@@ -1508,14 +1557,114 @@ function renderTagCloud(){
     const p=DB.find(x=>(x.tags||[]).includes(tag));
     return p?mc(p):'D';
   };
-  el.innerHTML=sorted.map(([tag,n])=>{
-    const size=Math.max(11,Math.min(20,11+Math.log2(n)*3));
+  el.innerHTML=sorted.slice(0,20).map(([tag,n])=>{
+    const size=Math.max(11,Math.min(16,11+Math.log2(n)*2));
     const cl=clusterForTag(tag);
     const color=CC[cl]||'var(--text2)';
     return `<span class="tc-tag" style="font-size:${size}px;color:${color};border-color:${color}40" onclick="document.getElementById('search').value='${tag}';S.query='${tag}';showResults()">${tag}</span>`;
   }).join('');
+  if(sorted.length>20){
+    el.insertAdjacentHTML('afterend',`<button class="tc-toggle" onclick="this.previousElementSibling.classList.toggle('expanded');this.textContent=this.previousElementSibling.classList.contains('expanded')?'▲ Weniger Tags':'▼ Alle ${sorted.length} Tags anzeigen'">▼ Alle ${sorted.length} Tags anzeigen</button>`);
+  }
 }
 
+
+// === SHARE FUNCTION ===
+function sharePrompt(id, method){
+  const p=DB.find(x=>x.id===id);if(!p)return;
+  const text=`${p.title}\n\n${(p.prompt_text||'').substring(0,500)}${(p.prompt_text||'').length>500?'...':''}`;
+  const url=window.location.href;
+
+  if(method==='whatsapp'){
+    window.open(`https://wa.me/?text=${encodeURIComponent(text+'\n\n'+url)}`, '_blank');
+  } else if(method==='email'){
+    window.open(`mailto:?subject=${encodeURIComponent('Prompt: '+p.title)}&body=${encodeURIComponent(text+'\n\nQuelle: '+url)}`, '_blank');
+  } else if(method==='copy'){
+    navigator.clipboard.writeText(text).then(()=>showToast('Link & Prompt kopiert!'));
+  }
+}
+
+function showToast(msg){
+  const t=document.getElementById('shareToast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2000);
+}
+
+// === COLLECTIONS SYSTEM ===
+let collections = JSON.parse(localStorage.getItem('pie-collections')||'{}');
+let collAddingId = null;
+
+function addToCollection(id){
+  collAddingId=id;
+  renderCollList();
+  document.getElementById('collModal').classList.add('show');
+}
+
+function closeCollModal(){
+  document.getElementById('collModal').classList.remove('show');
+  collAddingId=null;
+}
+
+function renderCollList(){
+  const el=document.getElementById('coll-list');
+  const names=Object.keys(collections);
+  if(!names.length){
+    el.innerHTML='<div style="color:var(--text3);font-size:12px;padding:12px;text-align:center">Noch keine Collections. Erstelle deine erste!</div>';
+    return;
+  }
+  el.innerHTML=names.map(name=>{
+    const items=collections[name]||[];
+    const isIn=collAddingId&&items.includes(collAddingId);
+    return `<div class="coll-item ${isIn?'active':''}" onclick="toggleInCollection('${name.replace(/'/g,"\'")}')">`+
+      `<span class="ci-name">📂 ${name}</span>`+
+      `<span class="ci-count">${items.length} Prompts ${isIn?'✓':''}</span>`+
+      `</div>`;
+  }).join('');
+}
+
+function toggleInCollection(name){
+  if(!collAddingId)return;
+  if(!collections[name])collections[name]=[];
+  const idx=collections[name].indexOf(collAddingId);
+  if(idx>=0)collections[name].splice(idx,1);
+  else collections[name].push(collAddingId);
+  localStorage.setItem('pie-collections',JSON.stringify(collections));
+  renderCollList();
+  buildSidebar();
+  showToast(idx>=0?'Aus Collection entfernt':'Zu "'+name+'" hinzugefügt');
+}
+
+function createCollection(){
+  const inp=document.getElementById('coll-new-name');
+  const name=inp.value.trim();
+  if(!name)return;
+  if(!collections[name])collections[name]=[];
+  localStorage.setItem('pie-collections',JSON.stringify(collections));
+  inp.value='';
+  renderCollList();
+  buildSidebar();
+  showToast('Collection "'+name+'" erstellt');
+}
+
+function showCollection(name){
+  S.view='results';S.query='';S.cluster='all';S.category='';
+  document.getElementById('home-view').style.display='none';
+  document.getElementById('results-view').style.display='';
+  document.getElementById('series-view').style.display='none';
+  const ids=collections[name]||[];
+  const list=ids.map(id=>DB.find(p=>p.id===id)).filter(Boolean);
+  document.getElementById('res-cnt').textContent=`📂 ${name} — ${list.length} Prompts`;
+  document.getElementById('grid').innerHTML=list.map(p=>cardHTML(p)).join('');
+}
+
+function deleteCollection(name,e){
+  e.stopPropagation();
+  if(!confirm('Collection "'+name+'" löschen?'))return;
+  delete collections[name];
+  localStorage.setItem('pie-collections',JSON.stringify(collections));
+  buildSidebar();
+  if(S.view==='results')showHome();
+}
 
 // === INIT ===
 init();
@@ -1553,6 +1702,24 @@ document.addEventListener('keydown', function(e){
     <div class="cmd-results" id="cmd-results"></div>
   </div>
 </div>
+
+<!-- COLLECTION MODAL -->
+<div class="coll-modal" id="collModal">
+  <div class="coll-box">
+    <h3>📂 Zu Collection hinzufügen</h3>
+    <div id="coll-list"></div>
+    <div class="coll-new">
+      <input id="coll-new-name" type="text" placeholder="Neue Collection erstellen...">
+      <button onclick="createCollection()">+ Erstellen</button>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:14px;justify-content:flex-end">
+      <button class="mbtn" onclick="closeCollModal()">Schließen</button>
+    </div>
+  </div>
+</div>
+
+<!-- SHARE TOAST -->
+<div class="share-toast" id="shareToast"></div>
 
 </body>
 </html>
