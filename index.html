@@ -591,6 +591,13 @@ async function init(){
     initCmdPalette();
     showHome();
     document.getElementById('loader').style.display='none';
+    // Deep Link: auto-open prompt from URL parameter
+    const urlParams=new URLSearchParams(window.location.search);
+    const deepPromptId=urlParams.get('prompt');
+    if(deepPromptId){
+      const dp=DB.find(x=>x.id===deepPromptId);
+      if(dp){setTimeout(()=>{selectPrompt(deepPromptId);document.querySelector('.lay')?.classList.add('open');},300);}
+    }
   }catch(e){
     st.textContent='Fehler beim Laden: '+e.message;
     // Fallback: file input
@@ -1573,14 +1580,15 @@ function renderTagCloud(){
 function sharePrompt(id, method){
   const p=DB.find(x=>x.id===id);if(!p)return;
   const text=`${p.title}\n\n${(p.prompt_text||'').substring(0,500)}${(p.prompt_text||'').length>500?'...':''}`;
-  const url=window.location.href;
+  const baseUrl=window.location.origin+window.location.pathname;
+  const deepUrl=baseUrl+'?prompt='+encodeURIComponent(id);
 
   if(method==='whatsapp'){
-    window.open(`https://wa.me/?text=${encodeURIComponent(text+'\n\n'+url)}`, '_blank');
+    window.open(`https://wa.me/?text=${encodeURIComponent(p.title+'\n\n'+deepUrl)}`, '_blank');
   } else if(method==='email'){
-    window.open(`mailto:?subject=${encodeURIComponent('Prompt: '+p.title)}&body=${encodeURIComponent(text+'\n\nQuelle: '+url)}`, '_blank');
+    window.open(`mailto:?subject=${encodeURIComponent('Prompt: '+p.title)}&body=${encodeURIComponent(text+'\n\nDirekt öffnen: '+deepUrl)}`, '_blank');
   } else if(method==='copy'){
-    navigator.clipboard.writeText(text).then(()=>showToast('Link & Prompt kopiert!'));
+    navigator.clipboard.writeText(deepUrl).then(()=>showToast('Deep Link kopiert! 🔗'));
   }
 }
 
